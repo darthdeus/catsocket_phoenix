@@ -17,6 +17,10 @@ config :catsocket_phoenix, CatsocketPhoenix.Endpoint,
   pubsub: [name: CatsocketPhoenix.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :phoenix, :template_engines,
+  slim: PhoenixSlime.Engine,
+  slime: PhoenixSlime.Engine
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
