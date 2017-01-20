@@ -18,6 +18,8 @@ defmodule Catsocket.Router do
 
     get "/", PageController, :index
     get "/about", PageController, :about
+
+    resources "/registrations", RegistrationController
   end
 
   # Other scopes may use custom stacks.
