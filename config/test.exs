@@ -2,7 +2,7 @@ use Mix.Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :catsocket_phoenix, CatsocketPhoenix.Endpoint,
+config :catsocket, Catsocket.Endpoint,
   http: [port: 4001],
   server: false
 
@@ -10,10 +10,10 @@ config :catsocket_phoenix, CatsocketPhoenix.Endpoint,
 config :logger, level: :warn
 
 # Configure your database
-config :catsocket_phoenix, CatsocketPhoenix.Repo,
+config :catsocket, Catsocket.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "catsocket_phoenix_test",
+  database: "catsocket_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

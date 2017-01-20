@@ -1,3 +1,3 @@
-defmodule CatsocketPhoenix.LayoutViewTest do
-  use CatsocketPhoenix.ConnCase, async: true
+defmodule Catsocket.LayoutViewTest do
+  use Catsocket.ConnCase, async: true
 end

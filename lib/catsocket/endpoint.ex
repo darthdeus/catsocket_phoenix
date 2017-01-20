@@ -1,14 +1,14 @@
-defmodule CatsocketPhoenix.Endpoint do
-  use Phoenix.Endpoint, otp_app: :catsocket_phoenix
+defmodule Catsocket.Endpoint do
+  use Phoenix.Endpoint, otp_app: :catsocket
 
-  socket "/socket", CatsocketPhoenix.UserSocket
+  socket "/socket", Catsocket.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
   # when deploying your static files in production.
   plug Plug.Static,
-    at: "/", from: :catsocket_phoenix, gzip: false,
+    at: "/", from: :catsocket, gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
@@ -35,8 +35,8 @@ defmodule CatsocketPhoenix.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   plug Plug.Session,
     store: :cookie,
-    key: "_catsocket_phoenix_key",
+    key: "_catsocket_key",
     signing_salt: "8A9YjIc8"
 
-  plug CatsocketPhoenix.Router
+  plug Catsocket.Router
 end

@@ -1,3 +1,3 @@
-defmodule CatsocketPhoenix.LayoutView do
-  use CatsocketPhoenix.Web, :view
+defmodule Catsocket.LayoutView do
+  use Catsocket.Web, :view
 end

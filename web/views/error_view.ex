@@ -1,5 +1,5 @@
-defmodule CatsocketPhoenix.ErrorView do
-  use CatsocketPhoenix.Web, :view
+defmodule Catsocket.ErrorView do
+  use Catsocket.Web, :view
 
   def render("404.html", _assigns) do
     "Page not found"

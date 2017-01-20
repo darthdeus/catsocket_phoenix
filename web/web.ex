@@ -1,12 +1,12 @@
-defmodule CatsocketPhoenix.Web do
+defmodule Catsocket.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
 
   This can be used in your application as:
 
-      use CatsocketPhoenix.Web, :controller
-      use CatsocketPhoenix.Web, :view
+      use Catsocket.Web, :controller
+      use Catsocket.Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -30,12 +30,12 @@ defmodule CatsocketPhoenix.Web do
     quote do
       use Phoenix.Controller
 
-      alias CatsocketPhoenix.Repo
+      alias Catsocket.Repo
       import Ecto
       import Ecto.Query
 
-      import CatsocketPhoenix.Router.Helpers
-      import CatsocketPhoenix.Gettext
+      import Catsocket.Router.Helpers
+      import Catsocket.Gettext
     end
   end
 
@@ -49,9 +49,9 @@ defmodule CatsocketPhoenix.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import CatsocketPhoenix.Router.Helpers
-      import CatsocketPhoenix.ErrorHelpers
-      import CatsocketPhoenix.Gettext
+      import Catsocket.Router.Helpers
+      import Catsocket.ErrorHelpers
+      import Catsocket.Gettext
     end
   end
 
@@ -65,10 +65,10 @@ defmodule CatsocketPhoenix.Web do
     quote do
       use Phoenix.Channel
 
-      alias CatsocketPhoenix.Repo
+      alias Catsocket.Repo
       import Ecto
       import Ecto.Query
-      import CatsocketPhoenix.Gettext
+      import Catsocket.Gettext
     end
   end
 

@@ -1,5 +1,5 @@
-defmodule CatsocketPhoenix.Router do
-  use CatsocketPhoenix.Web, :router
+defmodule Catsocket.Router do
+  use Catsocket.Web, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,7 +13,7 @@ defmodule CatsocketPhoenix.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", CatsocketPhoenix do
+  scope "/", Catsocket do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
@@ -21,7 +21,7 @@ defmodule CatsocketPhoenix.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", CatsocketPhoenix do
+  # scope "/api", Catsocket do
   #   pipe_through :api
   # end
 end

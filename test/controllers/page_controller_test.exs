@@ -1,5 +1,5 @@
-defmodule CatsocketPhoenix.PageControllerTest do
-  use CatsocketPhoenix.ConnCase
+defmodule Catsocket.PageControllerTest do
+  use Catsocket.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

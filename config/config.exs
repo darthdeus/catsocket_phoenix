@@ -6,15 +6,15 @@
 use Mix.Config
 
 # General application configuration
-config :catsocket_phoenix,
-  ecto_repos: [CatsocketPhoenix.Repo]
+config :catsocket,
+  ecto_repos: [Catsocket.Repo]
 
 # Configures the endpoint
-config :catsocket_phoenix, CatsocketPhoenix.Endpoint,
+config :catsocket, Catsocket.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "R1XWSEs8Y/XSLKPJhGXUYQB8OYkum7BCrX1P1eUw6t1savkDfdiQG15A1RwteXqU",
-  render_errors: [view: CatsocketPhoenix.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: CatsocketPhoenix.PubSub,
+  render_errors: [view: Catsocket.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Catsocket.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 config :phoenix, :template_engines,

@@ -1,4 +1,4 @@
-defmodule CatsocketPhoenix.ChannelCase do
+defmodule Catsocket.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -20,22 +20,22 @@ defmodule CatsocketPhoenix.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
-      alias CatsocketPhoenix.Repo
+      alias Catsocket.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
 
       # The default endpoint for testing
-      @endpoint CatsocketPhoenix.Endpoint
+      @endpoint Catsocket.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(CatsocketPhoenix.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Catsocket.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(CatsocketPhoenix.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Catsocket.Repo, {:shared, self()})
     end
 
     :ok
