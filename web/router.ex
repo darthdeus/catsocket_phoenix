@@ -19,7 +19,7 @@ defmodule Catsocket.Router do
     get "/", PageController, :index
     get "/about", PageController, :about
 
-    resources "/registrations", RegistrationController
+    resources "/registrations", RegistrationController, only: [:new, :create]
   end
 
   # Other scopes may use custom stacks.

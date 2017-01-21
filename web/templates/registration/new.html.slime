@@ -1,0 +1,9 @@
+h1 hello
+
+= form_for @changeset, :create, fn f ->
+  = input f, :username, :text
+  = input f, :password, :password
+  = input f, :password_confirmation, :password
+
+  = submit_button f, "Register"
+

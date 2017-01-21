@@ -40,3 +40,19 @@ defmodule Catsocket.Endpoint do
 
   plug Catsocket.Router
 end
+
+defmodule Catsocket.SimpleForm do
+  defmacro __using__(_) do
+    quote do
+      use Phoenix.HTML
+
+      def input(name) do
+        content_tag :div, class: "form-group" do
+          [
+            content_tag(:p, "hello")
+          ]
+        end
+      end
+    end
+  end
+end
