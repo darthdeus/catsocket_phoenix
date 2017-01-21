@@ -19,7 +19,7 @@ defmodule Catsocket.Mixfile do
   def application do
     [mod: {Catsocket, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin]]
+                    :phoenix_ecto, :postgrex, :comeonin, :ex_machina]]
   end
 
   # Specifies which paths to compile per environment.
@@ -39,7 +39,8 @@ defmodule Catsocket.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:phoenix_slime, "~> 0.8.0"},
-     {:comeonin, "~> 3.0"}
+     {:comeonin, "~> 3.0"},
+     {:ex_machina, "~> 1.0", only: :test}
     ]
   end
 

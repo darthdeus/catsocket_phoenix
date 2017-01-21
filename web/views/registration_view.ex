@@ -15,7 +15,7 @@ defmodule Catsocket.RegistrationView do
     end
   end
 
-  def submit_button(f, text) do
+  def submit_button(text) do
     content_tag :button, text, class: "btn btn-primary", type: "submit"
   end
 end
