@@ -1,0 +1,351 @@
+@import "https://fonts.googleapis.com/css?family=Indie+Flower";
+@import "bootstrap";
+@import "font-awesome";
+@import "prism";
+
+body {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.cat-font {
+  font-family: 'Indie Flower', cursive;
+}
+
+h1.cat-font {
+  font-size: 64px;
+}
+
+h2.cat-font {
+  font-size: 40px;
+}
+
+h4 {
+  font-size: 18px;
+  .fa {
+    display: inline-block;
+    margin-right: 3px;
+    font-size: 16px;
+  }
+}
+
+a.no-underline, a.no-underline:hover {
+  text-decoration: none !important;
+}
+
+span.sub {
+  font-size: 80%;
+  color: gray;
+}
+
+.features-grid {
+  border-top: 1px solid #eeeeee;
+
+  padding: 35px 20px 10px;
+  margin: 40px 0 0;
+
+  .feature-row {
+    margin-bottom: 15px;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.cat-head {
+  width: 140px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.subscribe-button {
+  width: 100%;
+}
+
+.painter {
+  border: 1px solid #f0f0f0;
+}
+
+.no-navbar-margin .navbar {
+  margin-bottom: 0;
+}
+
+.navbar-btn {
+    margin-right: 5px; 
+}
+
+.padding-top {
+  padding-top: 30px;
+}
+
+span.no-bold {
+  font-weight: normal;
+}
+
+.link-on-blue {
+  text-decoration: underline;
+  color: black;
+}
+
+.project-box, .white-box {
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  min-height: 120px;
+  margin-bottom: 40px;
+}
+
+.project-box-new {
+  border-radius: 3px;
+  border-style: dashed;
+  border-color: rgba(0,0,0,0.2);
+  border-width: 1px;
+  padding: 15px;
+  min-height: 120px;
+  margin-bottom: 40px;
+  color: rgba(0,0,0,0.2);
+  transition: all 0.2s cubic-bezier(0.4, 0, 1, 1);
+
+  input {
+    border-style: dashed;
+    border-color: rgba(0,0,0,0.2);
+    border-width: 1px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  button {
+    transition: all 0.2s  cubic-bezier(0.4, 0, 1, 1);
+    opacity: 0.7;
+  }
+}
+
+.project-box-new:hover {
+  border: 1px solid rgba(0,0,0,0.4);
+  color: black;
+
+  input {
+    border: 1px solid rgba(0,0,0,0.4);
+  }
+
+  button {
+    opacity: 1;
+  }
+
+}
+
+.padded {
+  padding: 15px;
+}
+
+.home {
+  .navigation {
+    overflow: hidden;
+    width: 100%;
+
+    ul.pull-right {
+      padding: 10px;
+      overflow: hidden;
+
+      li {
+        float: left;
+        list-style: none;
+        margin-right: 20px;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: #7C7D81;
+    }
+
+  }
+}
+
+.backdrop {
+  width: 100vw;
+  height: 480px;
+
+  &.backdrop-large {
+    height: 700px;
+  }
+
+  background: rgba(186,221,245,1);
+  background: -moz-linear-gradient(top, rgba(186,221,245,1) 0%, rgba(102,179,237,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(186,221,245,1)), color-stop(100%, rgba(102,179,237,1)));
+  background: -webkit-linear-gradient(top, rgba(186,221,245,1) 0%, rgba(102,179,237,1) 100%);
+  background: -o-linear-gradient(top, rgba(186,221,245,1) 0%, rgba(102,179,237,1) 100%);
+  background: -ms-linear-gradient(top, rgba(186,221,245,1) 0%, rgba(102,179,237,1) 100%);
+  background: linear-gradient(to bottom, rgba(186,221,245,1) 0%, rgba(102,179,237,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#baddf5', endColorstr='#66b3ed', GradientType=0 );
+}
+
+.home-demo {
+  overflow: hidden;
+  width: 540px;
+  padding-top: 30px;
+
+  h1.cat-font {
+    margin: 0;
+    text-align: center;
+    color: #2E4251;
+    font-size: 80px;
+  }
+
+  .chat-boxes {
+    overflow: hidden;
+    margin-top: 30px;
+  }
+
+  .cta-button {
+    margin-top: 30px;
+  }
+
+  .chat-box {
+    float: left;
+    width: 240px;
+    background: red;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    margin-bottom: 3px;
+    border-radius: 3px;
+    background: #f2f3f7;
+
+    .chat-inner {
+      padding: 10px;
+
+      .messages {
+        margin-bottom: 5px;
+
+        .message {
+          overflow: hidden;
+          margin-bottom: 8px;
+
+          .author {
+            float: left;
+            width: 40px;
+            font-weight: bold;
+          }
+
+          .text {
+            float: left;
+          }
+        }
+      }
+    }
+
+    &.first {
+      margin-right: 20px;
+    }
+  }
+}
+
+.project-show {
+  .jumbotron {
+    color: #2e4251;
+  }
+}
+
+.docs {
+}
+
+@import url("http://fonts.googleapis.com/css?family=Roboto:400,300,700italic,700,500&subset=latin,latin-ext");
+
+.pricing-cat {
+  margin: auto;
+  width: 200px;
+}
+
+.subscribe {
+  .compare-after {
+    background-color: green;
+    color: white;
+  }
+
+  .price {
+    font-size: 28px;
+    color: #5bc0de;
+  }
+}
+
+/* PRICING TABLE */
+.panel .lead {
+  font-size: 30px;
+}
+
+.panel.price,
+.panel.price>.panel-heading{
+  border-radius:0px;
+  -moz-transition: all .3s ease;
+  -o-transition:  all .3s ease;
+  -webkit-transition:  all .3s ease;
+  }
+
+  .panel.price>.panel-heading{
+    box-shadow: 0px 5px 0px rgba(50,50,50, .2) inset;
+  }
+
+  .price .list-group-item{
+    border-bottom-:1px solid rgba(250,250,250, .5);
+  }
+
+  .panel.price .list-group-item:last-child {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
+  .panel.price .list-group-item:first-child {
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+  }
+
+  .price .panel-footer {
+    color: #fff;
+    border-bottom:0px;
+    background-color:  rgba(0,0,0, .1);
+    box-shadow: 0px 3px 0px rgba(0,0,0, .3);
+  }
+
+  /* blue panel */
+
+  .price.panel-blue>.panel-heading {
+    color: #fff;
+    background-color: #2e4251;
+    border-color: #78AEE1;
+    border-bottom: 1px solid #78AEE1;
+  }
+
+  .price.panel-blue>.panel-body {
+    color: #fff;
+    background-color: #5bc0de;
+  }
+
+  .price.panel-blue .list-group-item {
+    color: #333;
+    background-color: rgba(50,50,50, .01);
+  }
+
+  /* white price */
+
+  .price.panel-white>.panel-heading {
+    color: #333;
+    background-color: #f9f9f9;
+    border-color: #ccc;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .price.panel-white>.panel-body {
+    color: #fff;
+    background-color: #dfdfdf;
+  }
+
+  .price.panel-white>.panel-body .lead{
+    color:#666;
+  }
+
+
+  .price.panel-white .list-group-item {
+    color: #333;
+    background-color: rgba(50,50,50, .01);
+  }

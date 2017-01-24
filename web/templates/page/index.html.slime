@@ -1,0 +1,206 @@
+.home
+  .backdrop
+    .container.home-demo
+      h1.cat-font.centered CatSocket
+      p.centered A simple platform for realtime web applications.
+
+      .chat-boxes
+        .chat-box.first#home-chat-left
+        .chat-box#home-chat-right
+
+      /javascript:
+      /  mountChat("Jack", document.getElementById("home-chat-left"));
+      /  mountChat("Kate", document.getElementById("home-chat-right"));
+
+
+      p.cta-button.centered
+        = link "Sign up for free", to: "/register", class: "btn btn-default btn-large"
+      p.centered No credit card required
+
+  .container
+    .catsocket-intro
+      .row
+        .col-sm-6.col-sm-offset-3.centered
+          img src="images/obrys1.png" class="cat-head"
+
+      h2.centered.cat-font Easy real time communication
+      .row
+        .col-md-12
+
+          p
+            | CatSocket makes two-way communication with the browser really easy.
+              You only need to send the event and we'll make sure the client
+              receives it.
+          strong Copy and paste the following snippet into your terminal.
+          br
+
+          - curl = "curl -XPOST https://catsocket.com/b/api/publish -d \"api_key=123&room=#{@guid}&message=hello\""
+          textarea.full-width onclick="this.select()" data-toggle="select-text" = curl
+
+          /javascript:
+          /  var cat = catsocket.init('123", { production: true });
+          /  cat.join("#{@guid}", function(message) {
+          /    $("#demo-output").removeClass("label-warning").addClass("label-success").text("Thank you for trying CatSocket!")
+          /  });
+
+          h3.centered
+            #demo-output.label.label-warning Waiting ...
+      hr
+      .row
+        .col-md-6 = image_tag "browser.png", class: "full-width"
+        .col-md-6
+          h2.cat-font Create amazing real-time experiences
+
+          p
+            | With CatSocket you can create reliable realtime communication
+              channels between your clients and your server. All with just a few
+              lines of code. You can do all sorts of interactive crazy features with Catsocket,
+              it is just up to your immagination. Thinking games? Data
+              visualization? Notifications? See <a href="/why">our use cases</a>
+              page to get more ideas.
+
+          p
+            | All you need to do is to call these 3 lines from your client or 1
+              line to send a message from a server.  We will take care of
+              everything else, including reliable mechanism for delivering
+              messages, management of history or handling of multiple connections.
+
+      .row: .col-md-6
+
+      .row
+        .col-md-6
+          h2.cat-font Server:
+          p
+           ' There are only 3 lines of code on  your client or one POST request needed to send a message from a anywhere. It does not matter what language or framework uses your backend.
+          p
+           ' We will take care of everything else, including reliable mechanism for delivering messages, management of history or handling of multiple connections. You can be sure your messages will be delivered.
+          p
+           ' Visit the
+           = link "demo app", to: "/why"
+           '  and see for yourself, how powerful it may be.
+
+        .col-md-6 = image_tag "mac.png", class: "full-width"
+
+
+      .features-grid
+        .row.feature-row
+          .col-md-4
+            h4 = fa_icon "lock", text: "Secure by design"
+            p
+              | All communication with our servers is encrypted and completely secure,
+                even on the free plan. Your data is safe with us.
+
+          .col-md-4
+            h4 = fa_icon "server", text: "Stability"
+            p
+              | Keeping the service stable is our primary focus. We're doing our best
+                to handle deployments of new features with zero downtime.
+
+          .col-md-4
+            h4 = fa_icon "money", text: "Competitive Pricing"
+            p
+              | Our pricing is so competitive that you will have a hard time to find a
+                better offer. We built CatSocket so that everyone can use it, no matter
+                how small the project is.
+
+        .row.feature-row
+          .col-md-4
+            h4
+              = fa_icon "rocket", text: "Built for Speed"
+            p
+              | Speed is a feature and we're taking it very seriously. Our service was
+                built from the ground up to provide low latency push messages anywhere in
+                the world.
+
+          .col-md-4
+            h4 = fa_icon "coffee", text: "Ease of Use"
+            p
+              | Using CatSocket is easy. The basic setup is just a few lines of code
+                and you're ready to go.  We also provide a debugging console to help you
+                diagnose when things don't work the way you expected.
+
+          .col-md-4
+            h4 = fa_icon "cloud-upload", text: "Automatic Client Reconnect"
+            p
+              | Some networks are less stable than others. CatSocket was built with
+                this in mind, and will automatically handle disconnected clients and possibly
+                lost messages.
+
+      p.centered
+        ' Not convinced yet?
+        strong Here are a few more examples of what CatSocket can do.
+      br
+
+      hr
+
+      h2.cat-font.centered#paint-demo Real time paint
+
+      .row
+        .col-md-8.col-md-offset-2
+
+          .row
+            .col-md-6
+              p
+                | When you move over one canvas, it automatically sends each mouse
+                  move event through our backend, which is then send back to the other
+                  canvas and painted at the same coordinates.
+
+            .col-md-6
+              p
+                | You can <a href="#pain-demo" target="_blank">open up a new window</a>
+                  and see how all of the canvases will be kept in sync, with very low latency.
+
+          .row
+            .col-md-6
+              canvas.painter.painter-first width="360" height="200"
+            .col-md-6
+              canvas.painter.painter-second width="360" height="200"
+
+              /javascript:
+              /  mountPaint($(".painter-first")[0]);
+              /  mountPaint($(".painter-second")[0]);
+
+          p
+            | An application like this one is sending about 100 events per
+              second. This can only work with WebSocket enabled browsers. While
+              CatSocket does support XHR polling, it wouldn't be able to have that
+              much throughput, and thus applications like this won't work in older
+              browsers. You can see the latency difference between WebSockets and
+              XHR polling on the documentation page. <strong>TODO</strong>
+
+      hr
+
+      h2.cat-font.centered Pricing
+      br
+      .container
+        .row
+          .col-md-3
+            = image_tag "obrys1.png", class: "pricing-cat"
+          .col-md-3
+            .panel.price.panel-white
+              .panel-heading.arrow_box.text-center
+                h3 Free
+              .panel-body.text-center
+                span.lead $0 / month
+              ul.list-group.list-group-flush.text-center
+                li.list-group-item 0 project
+                li.list-group-item 0 concurrent connections
+                li.list-group-item 0 messages / day
+                li.list-group-item Email customer support
+              .panel-footer
+                button.btn.btn-lg.btn-block.btn-default disabled=true Currently active
+
+          .col-md-3
+            .panel.price.panel-blue
+              .panel-heading.arrow_box.text-center
+                h3 Standard
+              .panel-body.text-center
+                span.lead $5 / month
+              ul.list-group.list-group-flush.text-center
+                li.list-group-item Unlimited number of projects
+                li.list-group-item 0 concurrent connections
+                li.list-group-item 0 messages / day
+                li.list-group-item Email customer support
+              .panel-footer
+                a.btn.btn-lg.btn-block.btn-default href="#" Sign up for free trial
+

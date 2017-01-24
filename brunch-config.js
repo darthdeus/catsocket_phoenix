@@ -54,6 +54,16 @@ exports.config = {
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
+    },
+    sass: {
+      mode: "native",
+      options: {
+        includePaths: [
+          "node_modules/bootstrap-sass/assets/stylesheets",
+          "node_modules/font-awesome/scss",
+          "node_modules/prismjs/themes"
+        ]
+      }
     }
   },
 

@@ -42,10 +42,13 @@ html
       /  span.logo
 
     .container
-      p class="alert alert-info" role="alert"
-        = get_flash(@conn, :info)
-      p class="alert alert-danger" role="alert"
-        = get_flash(@conn, :error)
+      - for type <- [:info, :error] do
+        - if flash = get_flash(@conn, type) do
+          p class="alert alert-#{type}" role="alert"
+
+        /  = get_flash(@conn, :info)
+        /p class="alert alert-danger" role="alert"
+        /  = get_flash(@conn, :error)
 
       = render @view_module, @view_template, assigns
 
