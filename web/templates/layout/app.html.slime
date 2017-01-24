@@ -11,16 +11,37 @@ html
     link rel="stylesheet" href="#{static_path(@conn, "/css/app.css")}"
 
   body
-    .container
-      header class="header"
-        nav role="navigation"
-          ul class="nav nav-pills pull-right"
+    nav.navbar.navbar-default
+      .container
+        .navbar-header
+          = link "CatSocket", to: "/", class: "navbar-brand cat-font"
+
+        .collapse.navbar-collapse
+          ul.nav.navbar-nav
             li
-              a href="http://www.phoenixframework.org/docs" Get Started
-            li = link "About", to: page_path(@conn, :about)
+              a href="/projects" Projects
+            li
+              a href="/why" Use Cases
+            li
+              a href="/docs" Documentation
 
-        span.logo
+          ul.nav.navbar-nav.navbar-right
+            li
+              a href="/login" Log in
 
+            li
+              a href="/register" Register
+
+      /header class="header"
+      /  nav role="navigation"
+      /    ul class="nav nav-pills pull-right"
+      /      li
+      /        a href="http://www.phoenixframework.org/docs" Get Started
+      /      li = link "About", to: page_path(@conn, :about)
+      /
+      /  span.logo
+
+    .container
       p class="alert alert-info" role="alert"
         = get_flash(@conn, :info)
       p class="alert alert-danger" role="alert"

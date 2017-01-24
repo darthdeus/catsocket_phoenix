@@ -40,7 +40,7 @@ defmodule Catsocket.Mixfile do
      {:cowboy, "~> 1.0"},
      {:phoenix_slime, "~> 0.8.0"},
      {:comeonin, "~> 3.0"},
-     {:ex_machina, "~> 1.0", only: :test}
+     {:ex_machina, "~> 1.0"}
     ]
   end
 

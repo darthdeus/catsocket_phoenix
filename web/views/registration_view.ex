@@ -1,6 +1,10 @@
 defmodule Catsocket.RegistrationView do
   use Catsocket.Web, :view
 
+  def simple_form_for(changeset, action, f) do
+
+  end
+
   def input(f, name, type) do
     text = case type do
       :text -> text_input(f, name, class: "form-control")
