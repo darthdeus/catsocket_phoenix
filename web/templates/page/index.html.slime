@@ -21,7 +21,7 @@
     .catsocket-intro
       .row
         .col-sm-6.col-sm-offset-3.centered
-          img src="images/obrys1.png" class="cat-head"
+          img src="images/obrys2.png" class="cat-head"
 
       h2.centered.cat-font Easy real time communication
       .row
