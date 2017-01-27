@@ -8,9 +8,11 @@
         .chat-box.first#home-chat-left
         .chat-box#home-chat-right
 
-      /javascript:
-      /  mountChat("Jack", document.getElementById("home-chat-left"));
-      /  mountChat("Kate", document.getElementById("home-chat-right"));
+      javascript:
+        document.addEventListener("DOMContentLoaded", () => {
+          mountChat("Jack", document.getElementById("home-chat-left"));
+          mountChat("Kate", document.getElementById("home-chat-right"));
+        })
 
 
       p.cta-button.centered
@@ -156,9 +158,12 @@
             .col-md-6
               canvas.painter.painter-second width="360" height="200"
 
-              /javascript:
-              /  mountPaint($(".painter-first")[0]);
-              /  mountPaint($(".painter-second")[0]);
+
+              javascript:
+                document.addEventListener("DOMContentLoaded", () => {
+                  mountPaint(document.querySelector(".painter-first"));
+                  mountPaint(document.querySelector(".painter-second"));
+                })
 
           p
             | An application like this one is sending about 100 events per
