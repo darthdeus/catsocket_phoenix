@@ -3,7 +3,7 @@ const path = require('path');
 const jsdir = path.resolve(__dirname, 'priv/static/js');
 
 module.exports = {
-  entry: "./web/static/js/app.js",
+  entry: "./web/static/js/app.jsx",
 
   output: {
     path: jsdir,
@@ -15,11 +15,14 @@ module.exports = {
   },
 
   module: {
-    rules: [
+    loaders: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: 'babel-loader'
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'react']
+        }
       }
     ]
   }

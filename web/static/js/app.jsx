@@ -31,34 +31,49 @@ import catsocket from './client';
     return Math.random().toString(36).substring(7);
   }
 
-  var Message = React.createClass({
-    propTypes: {
-      author: React.PropTypes.string.isRequired,
-      text: React.PropTypes.string.isRequired
-    },
+  // var Message = React.createClass({
+  //   propTypes: {
+  //     author: React.PropTypes.string.isRequired,
+  //     text: React.PropTypes.string.isRequired
+  //   },
+  //
+  //   render: function () {
+  //     var classes = ["message even", "message"];
+  //
+  //     return (
+  //       <div className={classes[this.props.even]}>
+  //       <span className="author">{this.props.author}</span>
+  //       <span className="text">{this.props.text}</span>
+  //       </div>
+  //     );
+  //   }
+  // });
 
-    render: function () {
-      var classes = ["message even", "message"];
+  const classes = ["message even", "message"];
+  const Message = ({even, author, text}) =>
+    <div className={classes[even]}>
+      <span className="author">{author}</span>
+      <span className="text">{text}</span>
+    </div>;
 
-      return (
-        <div className={classes[this.props.even]}>
-        <span className="author">{this.props.author}</span>
-        <span className="text">{this.props.text}</span>
-        </div>
-      );
-    }
-  });
 
-  var ChatMessages = React.createClass({
-    render: function () {
+  const ChatMessages = ({messages}) =>
+    <div className="messages">
+      {messages.map((message, i) =>
+        <Message key={i} author={message.author} even={i % 2} text={message.text}/>
+      )}
+    </div>;
 
-      var pics = this.props.messages.map(function (message, i) {
-        return <Message key={i} author={message.author} even={i % 2} text={message.text}/>;
-      });
-
-      return <div className="messages">{pics}</div>;
-    }
-  });
+  // var ChatMessages = React.createClass({
+  //   render: function () {
+  //
+  //     var pics = this.props.messages.map(function (message, i) {
+  //       return <Message key={i} author={message.author} even={i % 2} text={message.text}/>;
+  //     });
+  //
+  //     return <div className="messages">{pics}</div>;
+  //   }
+  // });
 
   var ChatForm = React.createClass({
     handleSubmit: function (e) {
