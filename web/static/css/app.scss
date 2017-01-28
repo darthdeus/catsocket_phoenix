@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Indie+Flower');
-@import "~/node_modules/bootstrap/dist/bootstrap.css";
-@import "~/node_modules/font-awesome/css/font-awesome.css";
+
+// $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap";
+// @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+$bootstrap-sass-asset-helper: true;
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome";
 @import "~prismjs/themes/prism";
 
 body {

@@ -1,5 +1,5 @@
 const path = require('path');
-
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const jsdir = path.resolve(__dirname, 'priv/static/js');
 
 module.exports = {
@@ -16,7 +16,6 @@ module.exports = {
 
   module: {
     loaders: [
-
 			{
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: "url-loader?limit=10000&mimetype=application/font-woff"
@@ -29,7 +28,7 @@ module.exports = {
 
       {
         test: /\.scss$/,
-        loaders: ["style-loader", "css-loader", "sass-loader"]
+        loaders: ["style-loader", "css-loader", "resolve-url", "sass-loader"]
       },
 
       {
@@ -41,5 +40,11 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+
+  plugins: [
+    new CopyWebpackPlugin([
+      { from: 'web/static/assets/', to: '..' }
+    ])
+  ]
 };
