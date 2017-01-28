@@ -32,24 +32,6 @@ import '../css/app.scss'
     return Math.random().toString(36).substring(7);
   }
 
-  // var Message = React.createClass({
-  //   propTypes: {
-  //     author: React.PropTypes.string.isRequired,
-  //     text: React.PropTypes.string.isRequired
-  //   },
-  //
-  //   render: function () {
-  //     var classes = ["message even", "message"];
-  //
-  //     return (
-  //       <div className={classes[this.props.even]}>
-  //       <span className="author">{this.props.author}</span>
-  //       <span className="text">{this.props.text}</span>
-  //       </div>
-  //     );
-  //   }
-  // });
-
   const classes = ["message even", "message"];
   const Message = ({even, author, text}) =>
     <div className={classes[even]}>
@@ -65,19 +47,8 @@ import '../css/app.scss'
       )}
     </div>;
 
-  // var ChatMessages = React.createClass({
-  //   render: function () {
-  //
-  //     var pics = this.props.messages.map(function (message, i) {
-  //       return <Message key={i} author={message.author} even={i % 2} text={message.text}/>;
-  //     });
-  //
-  //     return <div className="messages">{pics}</div>;
-  //   }
-  // });
-
-  var ChatForm = React.createClass({
-    handleSubmit: function (e) {
+  class ChatForm extends React.Component {
+    handleSubmit(e) {
       e.preventDefault();
       var node = React.findDOMNode(this.refs.message);
       var msg = node.value.trim();
@@ -89,9 +60,9 @@ import '../css/app.scss'
           author: this.props.username
         }));
       }
-    },
+    }
 
-    render: function () {
+    render() {
       var placeholder = "Talk as " + this.props.username + "...";
       return (
         <form onSubmit={this.handleSubmit}>
@@ -99,15 +70,16 @@ import '../css/app.scss'
         </form>
       );
     }
-  });
+  }
 
-  var ChatBox = React.createClass({
-    getInitialState: function () {
-      return {messages: this.props.messages};
-    },
+  class ChatBox extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { messages: props.messages };
+    }
 
-    componentDidMount: function () {
-      this.props.cat.join(ROOM, function (message) {
+    componentDidMount() {
+      this.props.cat.join(ROOM, function(message) {
         var data = JSON.parse(message);
 
         this.setState(function (old) {
@@ -119,9 +91,9 @@ import '../css/app.scss'
           return {messages: arr};
         });
       }.bind(this));
-    },
+    }
 
-    render: function () {
+    render() {
       var color, text;
 
       switch (this.props.status) {
@@ -160,7 +132,7 @@ import '../css/app.scss'
         </div>
       );
     }
-  });
+  }
 
   var Chat = React.createClass({
     getInitialState: function () {
