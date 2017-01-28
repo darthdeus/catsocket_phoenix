@@ -66,7 +66,7 @@ import '../css/app.scss'
       var placeholder = "Talk as " + this.props.username + "...";
       return (
         <form onSubmit={this.handleSubmit}>
-        <input className="form-control" type="text" placeholder={placeholder} ref="message" autoFocus="true" />
+          <input className="form-control" type="text" placeholder={placeholder} ref="message" autoFocus="true" />
         </form>
       );
     }
@@ -79,10 +79,11 @@ import '../css/app.scss'
     }
 
     componentDidMount() {
+      const self = this;
       this.props.cat.join(ROOM, function(message) {
         var data = JSON.parse(message);
 
-        this.setState(function (old) {
+        self.setState(function (old) {
           var arr = old.messages;
           if (arr.length > 4) {
             arr.splice(0, 1);
@@ -90,6 +91,7 @@ import '../css/app.scss'
           arr.push(data);
           return {messages: arr};
         });
+
       }.bind(this));
     }
 
@@ -134,13 +136,15 @@ import '../css/app.scss'
     }
   }
 
-  var Chat = React.createClass({
-    getInitialState: function () {
+  class Chat extends React.Component {
+    constructor(props) {
+      super(props);
+
       var cat = catsocket.init("b766496f-34b0-4967-8c14-7534dc57d38d", {
         production: true
       });
 
-      return {
+      this.state = {
         status: "connecting",
         cat: cat,
         username: this.props.username,
@@ -149,28 +153,28 @@ import '../css/app.scss'
           {author: "Jack", text: "We have to go back!"}
         ]
       };
-    },
-
-    componentDidMount: function() {
-      this.state.cat.status_changed = this.statusChanged;
-    },
-
-    statusChanged: function(value) {
-      this.setState({status: value});
-    },
-
-    nameSelected: function (name) {
-      this.setState({username: name});
-    },
-
-    render: function () {
-      return <ChatBox status={this.state.status}
-      cat={this.state.cat}
-      room={this.state.room}
-      username={this.state.username}
-      messages={this.state.messages}/>;
     }
-  });
+
+    componentDidMount() {
+      this.state.cat.status_changed = this.statusChanged.bind(this);
+    }
+
+    statusChanged(value) {
+      this.setState({status: value});
+    }
+
+    nameSelected(name) {
+      this.setState({username: name});
+    }
+
+    render() {
+      return <ChatBox status={this.state.status}
+        cat={this.state.cat}
+        room={this.state.room}
+        username={this.state.username}
+        messages={this.state.messages}/>;
+    }
+  }
 
   window.mountChat = function(username, element) {
     ReactDOM.render(React.createElement(Chat, {username: username}), element);
