@@ -20,12 +20,12 @@ defmodule Catsocket.Analytics.Store do
     {:ok, Enum.reverse(messages), []}
   end
 
-  def handle_info(:cleanup, state) do
+  def handle_info(:cleanup, _state) do
     # TODO
   end
 
 
-  @interval 60*1000 # 60 seconds
+  # @interval 60*1000 # 60 seconds
 
   # def init(opts) do
   #   table = :ets.new(__MODULE__, [:duplicate_bag])
@@ -33,5 +33,4 @@ defmodule Catsocket.Analytics.Store do
   #   Process.send_after(self, :clear_sum, @interval)
   #   {:ok, table}
   # end
-
 end

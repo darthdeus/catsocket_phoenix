@@ -20,7 +20,7 @@ defmodule Catsocket.Sockets.MessageCache do
   ## GenServer API
 
   def init([]) do
-    Process.send_after self, :timeout, 1000
+    Process.send_after self(), :timeout, 1000
 
     ets = :ets.new(__MODULE__, [:set])
     {:ok, ets}
@@ -60,7 +60,7 @@ defmodule Catsocket.Sockets.MessageCache do
 
   def handle_info(:timeout, state) do
     # IO.puts "received timeout 3"
-    Process.send_after self, :timeout, 1000
+    Process.send_after self(), :timeout, 1000
     {:noreply, state}
   end
 end

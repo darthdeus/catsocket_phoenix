@@ -24,7 +24,7 @@ defmodule Catsocket.Sockets.Keys do
   ## GenServer API
 
   def init(_) do
-     send self, :fetch
+     send self(), :fetch
     {:ok, []}
   end
 
