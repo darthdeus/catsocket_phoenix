@@ -14,6 +14,9 @@ defmodule Catsocket do
       supervisor(Catsocket.Endpoint, []),
       # Start your own worker by calling: Catsocket.Worker.start_link(arg1, arg2, arg3)
       # worker(Catsocket.Worker, [arg1, arg2, arg3]),
+ 
+      supervisor(Catsocket.Sockets.Supervisor, []),
+      supervisor(Catsocket.WS.Supervisor, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

@@ -6,6 +6,6 @@ defmodule Catsocket.RegistrationController do
     render conn, "new.html", changeset: User.changeset(%User{})
   end
 
-  def create(conn, params) do
+  def create(_conn, _params) do
   end
 end

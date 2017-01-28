@@ -17,9 +17,26 @@ defmodule Catsocket.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {Catsocket, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin, :ex_machina]]
+    [
+      mod: {Catsocket, []},
+      applications: [
+        :phoenix,
+        :phoenix_pubsub,
+        :phoenix_html,
+        :cowboy,
+        :logger,
+        :gettext,
+        :phoenix_ecto,
+        :postgrex,
+        :comeonin,
+        :ex_machina,
+
+        :timex,
+        :dbg,
+        :httpotion,
+        :folsom
+      ]
+    ]
   end
 
   # Specifies which paths to compile per environment.
@@ -40,7 +57,12 @@ defmodule Catsocket.Mixfile do
      {:cowboy, "~> 1.0"},
      {:phoenix_slime, "~> 0.8.0"},
      {:comeonin, "~> 3.0"},
-     {:ex_machina, "~> 1.0"}
+     {:ex_machina, "~> 1.0"},
+     {:httpotion, "~> 2.1.0"},
+     {:dbg, "~> 1.0.0"},
+     {:ibrowse, github: "cmullaparthi/ibrowse"},
+     {:folsom, github: "boundary/folsom"},
+     {:timex, "~> 3.0"}
     ]
   end
 

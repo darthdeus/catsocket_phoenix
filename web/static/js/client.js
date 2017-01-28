@@ -41,7 +41,7 @@ catsocket["init"] = function (api_key, options) {
 
     // TODO - asssert that API key exists
     user_id = user_id || guid();
-    if (DEBUG_SERVER && !options["production"]) {
+    if (true || DEBUG_SERVER && !options["production"]) {
         host = host || "ws://localhost:9000";
     } else {
         host = host || "wss://catsocket.com";
