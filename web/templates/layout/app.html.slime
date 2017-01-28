@@ -8,7 +8,6 @@ html
     meta name="author" content=""
 
     title CatSocket
-    link rel="stylesheet" href="#{static_path(@conn, "/css/app.css")}"
 
   body
     nav.navbar.navbar-default
