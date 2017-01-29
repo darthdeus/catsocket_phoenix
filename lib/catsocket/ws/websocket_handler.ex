@@ -23,9 +23,9 @@ defmodule Catsocket.WS.WebsocketHandler do
     :ok
   end
 
-  # def websocket_info({:broadcast, message}, req, state) do
-  #   {:reply, {:text, message}, req, state}
-  # end
+  def websocket_info({:broadcast, message}, req, state) do
+    {:reply, {:text, message}, req, state}
+  end
 
   def websocket_info(info, req, state) do
     IO.puts "info #{inspect info}"

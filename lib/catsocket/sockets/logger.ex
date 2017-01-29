@@ -15,39 +15,39 @@ defmodule Catsocket.Sockets.Logger do
   end
 
   def join(api_key, guid, room) do
-    :folsom_metrics.notify :join, 1
-    GenEvent.notify __MODULE__, {:log, :join, {api_key, guid, room}}
+    # :folsom_metrics.notify :join, 1
+    # GenEvent.notify __MODULE__, {:log, :join, {api_key, guid, room}}
     # ExStatsD.increment "backend.join"
 
     console_broadcast(api_key, "join", room, guid)
   end
 
   def leave(api_key, guid, room) do
-    :folsom_metrics.notify :leave, 1
-    GenEvent.notify __MODULE__, {:log, :leave, {api_key, guid, room}}
+    # :folsom_metrics.notify :leave, 1
+    # GenEvent.notify __MODULE__, {:log, :leave, {api_key, guid, room}}
     # ExStatsD.increment "backend.leave"
 
     console_broadcast(api_key, "leave", room, guid)
   end
 
   def identify(api_key, guid) do
-    :folsom_metrics.notify :identify, 1
-    GenEvent.notify __MODULE__, {:log, :identify, {api_key, guid}}
+    # :folsom_metrics.notify :identify, 1
+    # GenEvent.notify __MODULE__, {:log, :identify, {api_key, guid}}
     # ExStatsD.increment "backend.identify"
 
     console_broadcast(api_key, "identify", guid, "")
   end
 
   def broadcast(api_key, guid, room, message) do
-    :folsom_metrics.notify :broadcast, 1
-    GenEvent.notify __MODULE__, {:log, :broadcast, {api_key, guid, room, message}}
+    # :folsom_metrics.notify :broadcast, 1
+    # GenEvent.notify __MODULE__, {:log, :broadcast, {api_key, guid, room, message}}
     # ExStatsD.increment "backend.broadcast"
 
     console_broadcast(api_key, "broadcast", room, message)
   end
 
   def log_stats(stats) do
-    GenEvent.notify __MODULE__, {:log, :stats, stats}
+    # GenEvent.notify __MODULE__, {:log, :stats, stats}
   end
 
   def stream_stdout do
@@ -59,14 +59,14 @@ defmodule Catsocket.Sockets.Logger do
   end
 
   defp console_broadcast(api_key, event, target, desc) do
-    console_room = Keys.console_room(Keys, api_key)
-
-    if console_room != nil do
-      Rooms.broadcast(Rooms, api_key, console_room, %{
-        event:  event,
-        target: target,
-        desc:   desc
-      })
-    end
+    # console_room = Keys.console_room(Keys, api_key)
+    #
+    # if console_room != nil do
+    #   Rooms.broadcast(Rooms, api_key, console_room, %{
+    #     event:  event,
+    #     target: target,
+    #     desc:   desc
+    #   })
+    # end
   end
 end
