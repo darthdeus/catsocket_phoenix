@@ -4,11 +4,11 @@ defmodule Catsocket.UserTest do
   alias Catsocket.User
   import Catsocket.Factory
 
-  @valid_attrs %{email: "some content", encrypted_password: "some content"}
+  # @valid_attrs %{email: "some content", encrypted_password: "some content"}
   @invalid_attrs %{}
 
   test "has a valid factory" do
-    user = insert(:user)
+    insert(:user)
     # assert changeset.valid?
   end
 
