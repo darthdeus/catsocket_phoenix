@@ -34,7 +34,13 @@ defmodule Catsocket.Mixfile do
         :timex,
         :dbg,
         :httpotion,
-        :folsom
+        :folsom,
+
+        # TODO: do we need these?
+        :phoenix_slime,
+        :meck,
+        :elixir_make,
+        :edeliver
       ]
     ]
   end
