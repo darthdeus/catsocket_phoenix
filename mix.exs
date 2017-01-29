@@ -62,7 +62,10 @@ defmodule Catsocket.Mixfile do
      {:dbg, "~> 1.0.0"},
      {:ibrowse, github: "cmullaparthi/ibrowse"},
      {:folsom, github: "boundary/folsom"},
-     {:timex, "~> 3.0"}
+     {:timex, "~> 3.0"},
+
+     {:edeliver, "~> 1.4.0"},
+     {:distillery, ">= 0.8.0", warn_missing: false},
     ]
   end
 
