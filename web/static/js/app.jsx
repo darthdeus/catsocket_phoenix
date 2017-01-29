@@ -50,7 +50,7 @@ import '../css/app.scss'
   class ChatForm extends React.Component {
     handleSubmit(e) {
       e.preventDefault();
-      var node = React.findDOMNode(this.refs.message);
+      var node = this.input;
       var msg = node.value.trim();
 
       if (msg) {
@@ -65,8 +65,8 @@ import '../css/app.scss'
     render() {
       var placeholder = "Talk as " + this.props.username + "...";
       return (
-        <form onSubmit={this.handleSubmit}>
-          <input className="form-control" type="text" placeholder={placeholder} ref="message" autoFocus="true" />
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <input className="form-control" type="text" placeholder={placeholder} ref={input => this.input = input}  autoFocus="true" />
         </form>
       );
     }

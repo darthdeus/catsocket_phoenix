@@ -43,8 +43,9 @@ html
 
     .container
       - for type <- [:info, :error] do
-        - if flash = get_flash(@conn, type) do
-          p class="alert alert-#{type}" role="alert"
+        - flash = get_flash(@conn, type)
+        - if flash do
+          p class="alert alert-#{type}" role="alert" = flash
 
         /  = get_flash(@conn, :info)
         /p class="alert alert-danger" role="alert"

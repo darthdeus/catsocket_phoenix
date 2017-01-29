@@ -1,7 +1,7 @@
 defmodule Catsocket.RegistrationView do
   use Catsocket.Web, :view
 
-  def simple_form_for(changeset, action, f) do
+  def simple_form_for(_changeset, _action, _f) do
 
   end
 
