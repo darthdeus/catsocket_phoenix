@@ -1,4 +1,4 @@
-# CatsocketPhoenix [![CircleCI](https://circleci.com/gh/darthdeus/catsocket_phoenix.svg?style=svg)](https://circleci.com/gh/darthdeus/catsocket_phoenix)
+# CatsocketPhoenix [![CircleCI](https://circleci.com/gh/darthdeus/catsocket_phoenix.svg?style=svg&circle-token=f193d4a66be357f2c5a2a70772a6802e7c6cf99b)](https://circleci.com/gh/darthdeus/catsocket_phoenix)(https://circleci.com/gh/darthdeus/catsocket_phoenix)
 
 To start your Phoenix app:
 
