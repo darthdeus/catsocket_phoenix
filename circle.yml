@@ -1,12 +1,12 @@
 dependencies:
   pre:
+    - sudo locale-gen en_US.UTF-8
     - script/ci/prepare.sh
   cache_directories:
     - ~/dependencies
     - ~/.mix
     - _build
     - deps
-
 test:
   override:
     - script/ci/tests.sh
