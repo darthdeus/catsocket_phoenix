@@ -70,6 +70,7 @@ defmodule Catsocket.Mixfile do
      {:folsom, github: "boundary/folsom"},
      {:timex, "~> 3.0"},
 
+     {:credo, "~> 0.5", only: [:dev, :test]},
      {:edeliver, "~> 1.4.0"},
      {:distillery, ">= 0.8.0", warn_missing: false},
     ]
