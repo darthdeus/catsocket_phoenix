@@ -1,6 +1,5 @@
 defmodule Catsocket.StatsCollector do
   use GenServer
-  alias Catsocket.Sockets.Logger
 
   ## Public API
 
@@ -22,7 +21,6 @@ defmodule Catsocket.StatsCollector do
   def handle_info(:poll, target) do
     Process.send_after self(), :poll, 10 * 1000
     response = GenServer.call(target, :stats)
-    Logger.log_stats(response)
 
     {:noreply, target}
   end

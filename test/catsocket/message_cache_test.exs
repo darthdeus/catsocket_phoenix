@@ -9,18 +9,18 @@ defmodule Catsocket.MessageCacheTest do
     assert response == :ok
 
     response = MessageCache.get(pid, "olaficek")
-    assert response == true
+    assert response
 
     response = MessageCache.get(pid, "bobik")
-    assert response == false
+    refute response
   end
 
   test "messages expire" do
     {:ok, pid} = MessageCache.start_link
-    response = MessageCache.put(pid, "olaficek")
 
+    MessageCache.put(pid, "olaficek")
     MessageCache.cleanup(pid, 0)
-    response = MessageCache.get(pid, "olaficek")
-    assert response == false
+
+    refute MessageCache.get(pid, "olaficek")
   end
 end

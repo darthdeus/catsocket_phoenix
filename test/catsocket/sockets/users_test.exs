@@ -6,12 +6,12 @@ defmodule Catsocket.UsersTest do
     {:ok, pid} = Users.start_link
 
     guid = "123"
-    :ok = Users.associate(pid, guid, self)
+    :ok = Users.associate(pid, guid, self())
 
-    assert Users.fetch(pid, guid) == self
+    assert Users.fetch(pid, guid) == self()
 
-    :ok = Users.remove(pid, self)
-    assert Users.fetch(pid, guid) == nil
+    :ok = Users.remove(pid, self())
+    refute Users.fetch(pid, guid)
   end
 
   test "when the pid dies, it's automatically disassociated" do
@@ -24,8 +24,7 @@ defmodule Catsocket.UsersTest do
 
     :erlang.exit(nuf, :kill)
 
-    assert Process.alive?(nuf) == false
-
-    assert Users.fetch(pid, guid) == nil
+    refute Process.alive?(nuf)
+    refute Users.fetch(pid, guid)
   end
 end

@@ -1,13 +1,13 @@
 defmodule Catsocket.WS.WebsocketHandler do
   @behaviour :cowboy_websocket_handler
-  # alias Catsocket.Analytics.Counter
+
+  # alias Catsocket.Sockets.Users
 
   def init(_, _req, _opts) do
     {:upgrade, :protocol, :cowboy_websocket}
   end
 
   def websocket_init(type, req, opts) do
-    IO.puts "TYPE is #{type} ... opts #{opts}"
     {:ok, req, %{identified: false, api_key: nil, guid: nil}}
   end
 
@@ -15,10 +15,6 @@ defmodule Catsocket.WS.WebsocketHandler do
     IO.puts "connection closed with reason #{inspect reason}"
     Catsocket.Sockets.Users.remove(Catsocket.Sockets.Users, self())
     Catsocket.Sockets.Rooms.remove_user(Catsocket.Sockets.Rooms, self())
-
-    # if state.api_key != nil do
-    #   Counter.decr(Counter, state.api_key)
-    # end
 
     :ok
   end
@@ -125,8 +121,6 @@ defmodule Catsocket.WS.WebsocketHandler do
 
   defp handle_identify(message, req, state) do
     Catsocket.Sockets.Users.associate(Catsocket.Sockets.Users, message["user"], self())
-    # Catsocket.Sockets.Logger.identify(message["api_key"], message["user"])
-    # Counter.incr(Counter, message["api_key"])
 
     {:reply, ack(message), req, %{state | api_key: message["api_key"], guid: message["user"], identified: true }}
   end
@@ -137,7 +131,6 @@ defmodule Catsocket.WS.WebsocketHandler do
     room = message["data"]["room"]
 
     Catsocket.Sockets.Rooms.join(Catsocket.Sockets.Rooms, message["api_key"], room, state[:guid])
-    Catsocket.Sockets.Logger.join(message["api_key"], message["user"], room)
 
     {:reply, ack(message), req, state}
   end
@@ -148,7 +141,6 @@ defmodule Catsocket.WS.WebsocketHandler do
     room = message["data"]["room"]
 
     Catsocket.Sockets.Rooms.leave(Catsocket.Sockets.Rooms, message["api_key"], room, state[:guid])
-    Catsocket.Sockets.Logger.leave(message["api_key"], message["user"], room)
 
     {:reply, ack(message), req, state}
   end
@@ -161,7 +153,6 @@ defmodule Catsocket.WS.WebsocketHandler do
     room = message["data"]["room"]
     text = message["data"]["message"]
     Catsocket.Sockets.Rooms.broadcast(Catsocket.Sockets.Rooms, message["api_key"], room, text)
-    Catsocket.Sockets.Logger.broadcast(message["api_key"], message["user"], room, text)
 
     {:reply, ack(message), req, state}
   end
