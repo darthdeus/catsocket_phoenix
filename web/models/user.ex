@@ -7,7 +7,7 @@ defmodule Catsocket.User do
   @derive {Phoenix.Param, key: :id}
 
   @registration_params [:email, :password, :password_confirmation]
-  @required_params [:email, :encrypted_password]
+  # @required_params [:email, :encrypted_password]
 
   schema "users" do
     field :email, :string

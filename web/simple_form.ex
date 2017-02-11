@@ -1,5 +1,4 @@
 defmodule Catsocket.SimpleForm do
-  import Phoenix.HTML
   import Phoenix.HTML.Tag
 
   def simple_form_for(_changeset, _action, _f) do
@@ -44,15 +43,15 @@ defmodule Catsocket.SimpleForm do
   end
 
   def checkbox_input(_f, name, opts) do
-    content_tag :input, "", opts ++ [type: "checkbox"]
+    content_tag :input, "", opts ++ [type: "checkbox", name: name]
   end
 
   def text_input(_f, name, opts) do
-    content_tag :input, "", opts ++ [type: "text"]
+    content_tag :input, "", opts ++ [type: "text", name: name]
   end
 
   def password_input(_f, name, opts) do
-    content_tag :input, "", opts ++ [type: "password"]
+    content_tag :input, "", opts ++ [type: "password", name: name]
   end
 
   def name_to_label(name) do

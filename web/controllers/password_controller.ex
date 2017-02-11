@@ -1,6 +1,6 @@
 defmodule Catsocket.PasswordController do
   use Catsocket.Web, :controller
-  alias Catsocket.User
+  # alias Catsocket.User
 
   def new(conn, _params) do
     render conn, "new.html"

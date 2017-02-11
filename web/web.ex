@@ -52,7 +52,6 @@ defmodule Catsocket.Web do
       import Catsocket.Router.Helpers
       import Catsocket.ErrorHelpers
       import Catsocket.Gettext
-      import Catsocket.SimpleForm
     end
   end
 

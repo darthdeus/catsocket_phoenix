@@ -77,7 +77,7 @@ defmodule Catsocket.Socket.Limits do
     case :ets.lookup(ets, api_key) do
       [] ->
         {:reply, {0, true}, state}
-      [{api_key, is_paid, conns, messages}] ->
+      [{_, is_paid, conns, _}] ->
         is_valid_conn = if is_paid do
           conns <= paid_limit
         else
@@ -89,11 +89,13 @@ defmodule Catsocket.Socket.Limits do
   end
 
   def handle_call({:switch_to_paid, api_key }, _from, state) do
-    { ets, paid_limit, free_limit } = state
+    { ets, paid_limit, _ } = state
+
     case :ets.lookup(ets, api_key) do
-      [{api_key, is_paid, conns, messages}] ->
+      [{api_key, _, conns, messages}] ->
         :ets.insert(ets, {api_key, true, conns, messages})
     end
+
     {:reply, :ok, state}
   end
 end

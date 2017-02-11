@@ -4,11 +4,13 @@ defmodule Catsocket.RegistrationController do
   alias Catsocket.User
 
   def new(conn, _params) do
-    render conn, "new.html", changeset: User.changeset(%User{})
+    render(conn, "new.html", changeset: User.changeset(%User{}))
   end
 
   def create(conn, %{"user" => user_params}) do
     changeset = User.changeset(%User{}, user_params)
+
+    render(conn, "new.html", changeset: changeset)
 
     # TODO: implement this
     # case Registration.create(changeset, Catsocket.Repo) do
