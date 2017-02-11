@@ -19,6 +19,11 @@ defmodule Catsocket.Router do
     get "/", PageController, :index
     get "/about", PageController, :about
 
+    get "/login", SessionController, :new
+
+    resources "/projects", ProjectController, only: [:index]
+    resources "/password", PasswordController, only: [:new]
+    resources "/sessions", SessionController, only: [:create, :destroy]
     resources "/registrations", RegistrationController, only: [:new, :create]
   end
 

@@ -1,9 +1,36 @@
-h1 hello
+.backdrop.backdrop-large
+  .container
+    .row.padding-top
+      .col-md-5.col-md-offset-1
+        .white-box
+          h3 Create a new account
 
-= form_for @changeset, :create, fn f ->
-  = input f, :username, :text
-  = input f, :password, :password
-  = input f, :password_confirmation, :password
+          = form_for @changeset, :create, fn f ->
+            = input f, :username, :text
+            = input f, :password, :password
+            = input f, :password_confirmation, :password
 
-  = submit_button "Register"
+            = submit_button "Register"
+
+        p.padded
+          ' If you already have an account, you can
+          = link "log in here", to: session_path(@conn, :new), class: "link-on-blue"
+          | .
+
+      .col-md-4
+        .white-box
+          h3 Subscribing to: Free plan
+
+          p
+            | The free plan includes <strong>20 concurrent connections</strong>
+            | and 5000 messages per day. You can use it for however long you'd like,
+            | without any other limitations. If you reach these limits, you'll receive an email notification.
+
+          p
+            | Keep in mind that the free plan is supposed to be used mostly in development.
+
+          p
+            | You can upgrade and downgrade at any time, without any
+            | additional fees. If your'e unhappy with the service,
+            | simply email us and we'll give you a refund for your last paid month.
 

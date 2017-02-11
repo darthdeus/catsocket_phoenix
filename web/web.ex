@@ -49,6 +49,7 @@ defmodule Catsocket.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
+      import Catsocket.SimpleForm
       import Catsocket.Router.Helpers
       import Catsocket.ErrorHelpers
       import Catsocket.Gettext

@@ -30,7 +30,7 @@ html
               a href="/login" Log in
 
             li
-              a href="/register" Register
+              = link "Register", to: "/registrations/new"
 
       /header class="header"
       /  nav role="navigation"

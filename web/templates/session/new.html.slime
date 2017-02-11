@@ -1,0 +1,22 @@
+.backdrop.backdrop-large
+  .container
+    .row.padding-top
+      .col-md-5.col-md-offset-3
+        .white-box
+          h3 Log in
+
+          = form_for @changeset, :create, fn f ->
+            = input f, :email, :text
+            = input f, :password, :password
+
+            = checkbox_input f, :remember_me
+
+            .form-actions
+              = submit_button "Log in"
+              = link "Forgot your password?", to: password_path(@conn, :new)
+
+        p.padded
+          ' If you don't have an account yet, you can
+          = link "register here", to: registration_path(@conn, :new), class: "link-on-blue"
+          | .
+
