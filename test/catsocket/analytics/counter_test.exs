@@ -25,4 +25,13 @@ defmodule Catsocket.Analytics.CounterTest do
     response = Counter.get(pid, "Lulinka")
     assert response == 1
   end
+
+  test "deletes the counter" do
+    {:ok, pid} = Counter.start_link
+    Counter.incr(pid, "Olaficek")
+    Counter.delete(pid, "Olaficek")
+
+    response = Counter.get(pid, "Olaficek")
+    assert response == 0
+  end
 end

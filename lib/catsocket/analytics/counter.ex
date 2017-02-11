@@ -18,6 +18,10 @@ defmodule Catsocket.Analytics.Counter do
     GenServer.call(pid, {:get, api_key})
   end
 
+  def delete(pid, api_key) do
+    GenServer.call(pid, {:delete, api_key})
+  end
+
   def init(_opts) do
     ets = :ets.new(__MODULE__, [:set])
     { :ok, ets }
@@ -47,5 +51,10 @@ defmodule Catsocket.Analytics.Counter do
       [] ->
         {:reply, 0, ets}
      end
+  end
+
+  def handle_call({:delete, api_key}, _from, ets) do
+    :ets.delete(ets, api_key)
+    {:reply, :ok, ets}
   end
 end
