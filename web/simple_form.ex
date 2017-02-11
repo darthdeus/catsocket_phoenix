@@ -5,7 +5,7 @@ defmodule Catsocket.SimpleForm do
 
   end
 
-  def checkbox_input(_f, name) do
+  def checkbox_input(f, name) do
     label = name_to_label(name)
 
     content_tag :div, class: "form-group" do
@@ -30,10 +30,16 @@ defmodule Catsocket.SimpleForm do
       :password -> password_input(f, name, class: "form-control")
     end
 
+    error = case f.source.errors[name] do
+      {err,_} -> err
+      nil -> nil
+    end
+
     content_tag :div, class: "form-group" do
       [
         content_tag(:label, label, for: name),
-        text
+        text,
+        content_tag(:strong, error)
       ]
     end
   end
