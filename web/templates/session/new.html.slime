@@ -13,6 +13,7 @@
 
             .form-actions
               = submit_button "Log in"
+              '
               = link "Forgot your password?", to: password_path(@conn, :new)
 
         p.padded
