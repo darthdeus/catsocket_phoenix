@@ -29,6 +29,7 @@ defmodule Catsocket.User do
     # TODO: proper email validation
     |> validate_format(:email, ~r/@/)
     # TODO: add unique index on email in the database
+    # TODO: validate password confirmation matches
     # |> unique_constraint(:email)
     |> validate_length(:password, min: 7)
     |> hash_password

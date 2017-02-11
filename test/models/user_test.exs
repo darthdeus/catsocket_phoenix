@@ -14,7 +14,8 @@ defmodule Catsocket.UserTest do
     refute User.changeset(%User{}, %{}).valid?
   end
 
-  test "user's password gets hashed on save" do
-
+  test "user's password gets hashed" do
+    # user = User.changeset(%User{password: "password"})
+    refute "TODO"
   end
 end
