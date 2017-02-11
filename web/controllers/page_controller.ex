@@ -8,4 +8,8 @@ defmodule Catsocket.PageController do
   def about(conn, _params) do
     render conn, "about.html"
   end
+
+  def docs(conn, _params) do
+    render conn, "docs.html"
+  end
 end

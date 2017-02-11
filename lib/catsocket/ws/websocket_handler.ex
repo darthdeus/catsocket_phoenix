@@ -50,7 +50,6 @@ defmodule Catsocket.WS.WebsocketHandler do
     {:reply, {:text, "unknown message"}, req, state}
   end
 
-
   def validate_message(message) do
     if ! Map.has_key?(message, "api_key"),   do: throw {:invalid, "api_key"}
     if ! Map.has_key?(message, "user"),      do: throw {:invalid, "user"}

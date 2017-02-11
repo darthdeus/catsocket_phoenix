@@ -18,6 +18,7 @@ defmodule Catsocket.Router do
 
     get "/", PageController, :index
     get "/about", PageController, :about
+    get "/docs", PageController, :docs
 
     get "/login", SessionController, :new
 

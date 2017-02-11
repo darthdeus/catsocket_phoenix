@@ -1,0 +1,160 @@
+.container
+  h1 Documentation
+  .row.docs
+    .col-md-4
+      .well
+        ol
+          li
+            a href="#setup" Setup & basic usage
+          li
+            a href ="#message-from-server" Sending messages from a server
+          li
+            a href="#advanced" More advanced notes
+          li
+           a href="#qa" Q&A
+
+    .col-md-8
+      h1#setup Setup & basic usage
+      h3 1. Preparation
+      p
+        | First you need to add the CatSocket client file to your project. It will
+          allow you to use CatSocket via connecting to our server. Simple add a script
+          tag to your HTML file like this:
+
+      pre
+        code.language-markup &lt;script src="https://catsocket.com/js/client.min.js"&gt;&lt;/script&gt;
+      p
+        | Next, register a new account on CatSocket.com and log in. Click on
+          projects in the top navigation menu to create a new project. Project
+          represents an application, where you will want to use CatSocket. When
+          creating a new project, just enter its name and submit. You will be
+          redirected to that project page and you should see the public api-key, generated
+          uniquely just for this project.
+
+      h3 2. Initialize CatSocket connection in your app
+
+      p
+        | First thing you need to do if you want to use catsocket is to initialize
+          the connection and identify yourself with your public api-key.  To do
+          that, you just need to call in your JavaScript a <code>catsocket.init()</code>
+          function with a api-key as a parameter.
+      pre
+        code.language-javascript catsocket.init("6a7bda56-66ba-4f3c-8a37-707e85518481");
+
+      p
+        | You should store the result of this call to the variable. You will need it to join and leave rooms and send
+          messages. When we will be referencing 'cat' in this guide, we will mean this
+          variable of ours, not anything special. You could name it as you wish but we
+          reccommend cute cat or kitten-like words ^^.
+
+      pre
+        code.language-javascript var cat = catsocket.init("6a7bda56-66ba-4f3c-8a37-707e85518481");
+      h3 3. Join a room and start broadcast from the client
+
+      p
+        | Now you are all set up to start using the power of CatSockets. Room is a
+          virtual place you can subscribe to and send message to. You will not be able
+          to read messagges aimed for different rooms than you are subscribed to, as
+          well as others will not be able to read messages broadcasted to different
+          rooms than they are in. Room name could be anything.
+
+      p
+        | You do not have to initialize the room, you can just join it and it will be created:
+
+      pre
+        code.language-javascript cat.join("my-new-room", function(message) { console.log(message) })
+      p
+        code join
+        | takes 2 arguments:
+      ul
+        li Name of the target room
+        li
+          | Function, which will be called when a message to this room arrives. The
+            message will be stored in this function argument. In this example every
+            message will be printed to the console.
+
+      p
+        | You can join as many rooms as you want.
+      p
+        | To send a message to the entire room recepients, you need to use the
+          <code>broadcast</code> function, with the name of the room as the
+          first argument and the mesage itself as the second. You do not need to be
+          joined in the room you want to broadcast to! If you are joined though, you
+          will receive the message you sent yourself :)
+
+      pre
+        code.language-javascript cat.broadcast("my-new-room", "Hello everybody!")
+
+      h3 4. Leave a room
+      p
+        | When you are done, you can leave the room with <code>leave</code>. You will no longer receive any messages for that room:
+      pre
+        code.language-javascript cat.leave("my-new-room")
+
+
+      hr/
+      h1#message-from-server.margin-top Send a message from a server
+
+      p
+        | Sometimes you may want to send messages not just from the JavaScript, but also from the server. You can make a POST request to
+        code http://catsocket.com/api/publish
+        | with the api-key, room and message parameters. Check out the example via the CURL (you can try it in your terminal):
+      pre
+        code.language-bash curl -i -XPOST http://catsocket.com/api/publish -d "api_key=foo&room=test&message=baz"
+
+      hr/
+      h1#advanced.margin-top More advanced notes
+      h3 Initializing CatSocket connection multiple times
+      p
+        | If you are using multiple cat objects (you initialized the connection
+          multiple times with a different api-keys and store the results in different
+          variables), you will get a different enviroments. 
+      p
+        | It means that joing a room
+          in one environment and broadcasting to the room with the same name in the
+          other environment will not work. There will be 2 different rooms even though
+          with the same name. 
+      p
+        | The cat object on which you are calling the function is
+          the important part which defines the socket connections. See the example:
+
+      pre
+        code.language-javascript
+          | var cat = catsocket.init("api-key-1");
+            var kitten = catsocket.init("api-key-2");
+            cat.join("meow", function(mesage) { alert(message); });
+            kitten.broadcast("meow", "Lost message");
+
+      p
+        | Even though <code>cat</code> joined room with the same name,
+          it will not receive the message "Lost message" as it was send via different
+          connection and with different public api-key.
+
+
+      hr/
+      h1#qa.margin-top Q&A
+      p
+        strong What is the difference between my public and private keys?
+      p
+        | Public key is used for connecting to CatScoket from your clients. You need it to authorize yourself. Without it you can not use CatSocket. Private key on the other hand, is only for your debugging console.
+      p
+        strong What are rooms?
+      p
+        | Rooms represents separate spaces for your communication, for example: you can use one room for sending notification and second room for sending statistics. Messages from one room will never get into other rooms. You can name your room freely.
+      p
+        strong How can I debug my traffic?
+      p
+        | Click on "Project", than click on the name of your project and you will get into project setup page. You can swith tabs to get into "Debug console" which is a tool for observing your traffic. Debug console will show you all messages across all your rooms.
+      p
+        strong If an internet connection is lost, will you repeat the delivery of failed message?
+      p
+        strong What happens if I accidently send my message multiple times?
+      p
+        strong How can I tell that message was acknowledged by the server?
+      p
+        strong Will my messages get to the room in the same order as I send them?
+
+    javascript:
+      $(document).on('ready page:load', function() {
+          Prism.highlightAll();
+       });
