@@ -100,17 +100,17 @@ defmodule Catsocket.WS.WebsocketHandler do
       end
     catch
       {:invalid, attr} ->
-        error = %{ error: "Missing attribute '#{attr}'" }
+        error = %{error: "Missing attribute '#{attr}'"}
         json = Poison.encode!(error)
         {:reply, {:text, json}, req, state}
 
       :unidentified ->
-        error = %{ error: "Identify required" }
+        error = %{error: "Identify required"}
         json = Poison.encode!(error)
         {:reply, {:text, json}, req, state}
 
       :wrong_api_key ->
-        error = %{ error: "Api key required" }
+        error = %{error: "Api key required"}
         json = Poison.encode!(error)
         {:reply, {:text, json}, req, state}
     end
@@ -121,7 +121,7 @@ defmodule Catsocket.WS.WebsocketHandler do
   defp handle_identify(message, req, state) do
     Catsocket.Sockets.Users.associate(Catsocket.Sockets.Users, message["user"], self())
 
-    {:reply, ack(message), req, %{state | api_key: message["api_key"], guid: message["user"], identified: true }}
+    {:reply, ack(message), req, %{state | api_key: message["api_key"], guid: message["user"], identified: true}}
   end
 
   defp handle_join(message, req, state) do

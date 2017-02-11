@@ -5,29 +5,29 @@ defmodule Catsocket.Socket.Limits do
   end
 
   def increase_connection(pid, api_key) do
-    GenServer.call(pid, { :increase, api_key })
+    GenServer.call(pid, {:increase, api_key})
   end
 
   def decrease_connection(pid, api_key) do
-    GenServer.call(pid, { :decrease, api_key })
+    GenServer.call(pid, {:decrease, api_key})
   end
 
   def get_state(pid, api_key) do
-    GenServer.call(pid, { :get_state, api_key })
+    GenServer.call(pid, {:get_state, api_key})
   end
 
   def switch_to_paid(pid, api_key) do
-    GenServer.call(pid, { :switch_to_paid, api_key })
+    GenServer.call(pid, {:switch_to_paid, api_key})
   end
 
   # GenServer API
   def init([paid: paid, free: free]) do
     ets = :ets.new(__MODULE__, [:set])
-    { :ok, { ets, paid, free } }
+    {:ok, {ets, paid, free}}
   end
 
   def handle_call({:increase, api_key}, _from, state) do
-    { ets, paid_limit, free_limit } = state
+    {ets, paid_limit, free_limit} = state
 
     case :ets.lookup(ets, api_key) do
       [] ->
@@ -53,7 +53,7 @@ defmodule Catsocket.Socket.Limits do
   end
 
   def handle_call({:decrease, api_key}, _from, state) do
-    { ets, paid_limit, free_limit } = state
+    {ets, paid_limit, free_limit} = state
 
     case :ets.lookup(ets, api_key) do
       [] ->
@@ -72,7 +72,7 @@ defmodule Catsocket.Socket.Limits do
   end
 
   def handle_call({:get_state, api_key}, _from, state) do
-    { ets, paid_limit, free_limit } = state
+    {ets, paid_limit, free_limit} = state
 
     case :ets.lookup(ets, api_key) do
       [] ->
@@ -88,8 +88,8 @@ defmodule Catsocket.Socket.Limits do
     end
   end
 
-  def handle_call({:switch_to_paid, api_key }, _from, state) do
-    { ets, paid_limit, _ } = state
+  def handle_call({:switch_to_paid, api_key}, _from, state) do
+    {ets, paid_limit, _} = state
 
     case :ets.lookup(ets, api_key) do
       [{api_key, _, conns, messages}] ->

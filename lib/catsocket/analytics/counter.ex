@@ -24,12 +24,12 @@ defmodule Catsocket.Analytics.Counter do
 
   def init(_opts) do
     ets = :ets.new(__MODULE__, [:set])
-    { :ok, ets }
+    {:ok, ets}
   end
 
   def handle_call({:incr, api_key}, _from, ets) do
     if :ets.lookup(ets, api_key) == [] do
-      :ets.insert(ets, {api_key, 1 })
+      :ets.insert(ets, {api_key, 1})
     else
       :ets.update_counter(ets, api_key, 1)
     end
@@ -45,7 +45,7 @@ defmodule Catsocket.Analytics.Counter do
 
   def handle_call({:get, api_key}, _from, ets) do
     case :ets.lookup(ets, api_key) do
-      [{ _, value }] ->
+      [{ _, value}] ->
         {:reply, value, ets}
 
       [] ->
