@@ -20,7 +20,7 @@ defmodule Catsocket.StatsCollector do
 
   def handle_info(:poll, target) do
     Process.send_after self(), :poll, 10 * 1000
-    response = GenServer.call(target, :stats)
+    _response = GenServer.call(target, :stats)
 
     {:noreply, target}
   end

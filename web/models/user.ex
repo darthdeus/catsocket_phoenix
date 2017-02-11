@@ -13,10 +13,10 @@ defmodule Catsocket.User do
     field :email, :string
     field :encrypted_password, :string
 
-    timestamps()
-
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
+
+    timestamps()
   end
 
   @doc """
@@ -26,6 +26,11 @@ defmodule Catsocket.User do
     struct
     |> cast(params, @registration_params)
     |> validate_required(@registration_params)
+    # TODO: proper email validation
+    |> validate_format(:email, ~r/@/)
+    # TODO: add unique index on email in the database
+    # |> unique_constraint(:email)
+    |> validate_length(:password, min: 7)
     |> hash_password
   end
 
