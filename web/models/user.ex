@@ -26,13 +26,12 @@ defmodule Catsocket.User do
     struct
     |> cast(params, @registration_params)
     |> validate_required(@registration_params)
+    |> hash_password
     # TODO: proper email validation
     |> validate_format(:email, ~r/@/)
     |> validate_confirmation(:password)
-    # TODO: add unique index on email in the database
-    # |> unique_constraint(:email)
     |> validate_length(:password, min: 7)
-    |> hash_password
+    |> unique_constraint(:email)
   end
 
   defp hash_password(changeset) do
