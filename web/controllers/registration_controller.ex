@@ -9,7 +9,7 @@ defmodule Catsocket.RegistrationController do
 
   def create(conn, %{"user" => user_params}) do
     case register(user_params) do
-      {:ok, changeset} ->
+      {:ok, _} ->
         conn
         |> put_flash(:info, "You have successfully registered and are now signed in.")
         # TODO: figure out a proper redirect path

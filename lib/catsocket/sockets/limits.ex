@@ -89,7 +89,7 @@ defmodule Catsocket.Socket.Limits do
   end
 
   def handle_call({:switch_to_paid, api_key}, _from, state) do
-    {ets, paid_limit, _} = state
+    {ets, _, _} = state
 
     case :ets.lookup(ets, api_key) do
       [{api_key, _, conns, messages}] ->

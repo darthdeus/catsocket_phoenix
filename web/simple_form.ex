@@ -5,7 +5,7 @@ defmodule Catsocket.SimpleForm do
 
   end
 
-  def checkbox_input(f, name) do
+  def checkbox_input(_f, name) do
     label = name_to_label(name)
 
     content_tag :div, class: "form-group" do
@@ -30,9 +30,9 @@ defmodule Catsocket.SimpleForm do
       :password -> password_input(f, name, class: "form-control")
     end
 
-    error = case f.source.errors[name] do
-      {err,_} -> err
-      nil -> nil
+    error = case f.source do
+      source when is_map(source) -> extract_error(source, name)
+      _ -> ""
     end
 
     content_tag :div, class: "form-group" do
@@ -60,11 +60,25 @@ defmodule Catsocket.SimpleForm do
     content_tag :input, "", opts ++ [type: "password", name: name]
   end
 
+  @doc """
+  Converts an atom field name to a capitalized label text.
+
+      iex> name_to_label(:hello_world)
+      "Hello World"
+
+  """
   def name_to_label(name) do
     name
     |> Atom.to_string()
     |> String.split("_")
     |> Enum.map(&String.capitalize(&1))
     |> Enum.join(" ")
+  end
+
+  defp extract_error(source, name) when is_map(source) do
+    case Map.get(source, :errors, %{})[name] do
+      {err,_} -> err
+      nil -> nil
+    end
   end
 end

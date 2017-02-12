@@ -4,10 +4,10 @@ defmodule Catsocket.User do
   import Comeonin.Bcrypt, only: [hashpwsalt: 1]
 
   @primary_key {:id, :binary_id, autogenerate: true}
+  # TODO: is this required?
   @derive {Phoenix.Param, key: :id}
 
   @registration_params [:email, :password, :password_confirmation]
-  # @required_params [:email, :encrypted_password]
 
   schema "users" do
     field :email, :string

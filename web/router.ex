@@ -21,6 +21,7 @@ defmodule Catsocket.Router do
     get "/docs", PageController, :docs
 
     get "/login", SessionController, :new
+    post "/login", SessionController, :create
 
     resources "/projects", ProjectController, only: [:index]
     resources "/password", PasswordController, only: [:new]

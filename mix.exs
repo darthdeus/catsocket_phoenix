@@ -32,13 +32,13 @@ defmodule Catsocket.Mixfile do
         :ex_machina,
 
         :timex,
-        :dbg,
+        :phoenix_slime,
         :httpotion,
-        :folsom,
 
         # TODO: do we need these?
-        :phoenix_slime,
-        :meck,
+        # :dbg,
+        # :folsom,
+        # :meck,
         :elixir_make,
         :edeliver
       ]
@@ -64,14 +64,15 @@ defmodule Catsocket.Mixfile do
      {:phoenix_slime, "~> 0.8.0"},
      {:comeonin, "~> 3.0"},
      {:ex_machina, "~> 1.0"},
-     {:httpotion, "~> 2.1.0"},
-     {:dbg, "~> 1.0.0"},
-     {:ibrowse, github: "cmullaparthi/ibrowse"},
-     {:folsom, github: "boundary/folsom"},
+     {:httpotion, "~> 3.0.2"},
+
      {:timex, "~> 3.0"},
 
-     {:dialyze, "~> 0.2.0", only: [:dev, :test]},
-     # {:dialyxir, "~> 0.4", only: [:dev, :test], runtime: false},
+     {:dialyxir, "~> 0.4", only: [:dev, :test], runtime: false},
+
+     # TODO: do we still need these?
+     # {:dbg, "~> 1.0.0"},
+     # {:folsom, github: "boundary/folsom"},
      {:credo, "~> 0.5", only: [:dev, :test]},
      {:edeliver, "~> 1.4.0"},
      {:distillery, ">= 0.8.0", warn_missing: false},
