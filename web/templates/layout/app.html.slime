@@ -42,7 +42,7 @@ html
       /  span.logo
 
     .container
-      - for type <- [:info, :error] do
+      = for type <- [:info, :error] do
         - flash = get_flash(@conn, type)
         = if flash do
           p class="alert alert-#{type}" role="alert" = flash

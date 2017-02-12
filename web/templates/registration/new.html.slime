@@ -5,8 +5,8 @@
         .white-box
           h3 Create a new account
 
-          = form_for @changeset, :create, fn f ->
-            = input f, :username, :text
+          = form_for @changeset, registration_path(@conn, :create), [as: :user], fn f ->
+            = input f, :email, :text
             = input f, :password, :password
             = input f, :password_confirmation, :password
 
