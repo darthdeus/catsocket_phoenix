@@ -61,7 +61,8 @@ defmodule Catsocket.SimpleForm do
   end
 
   def name_to_label(name) do
-    Atom.to_string(name)
+    name
+    |> Atom.to_string()
     |> String.split("_")
     |> Enum.map(&String.capitalize(&1))
     |> Enum.join(" ")

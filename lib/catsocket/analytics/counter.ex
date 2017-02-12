@@ -45,7 +45,7 @@ defmodule Catsocket.Analytics.Counter do
 
   def handle_call({:get, api_key}, _from, ets) do
     case :ets.lookup(ets, api_key) do
-      [{ _, value}] ->
+      [{_, value}] ->
         {:reply, value, ets}
 
       [] ->
