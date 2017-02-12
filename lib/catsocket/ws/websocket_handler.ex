@@ -7,7 +7,7 @@ defmodule Catsocket.WS.WebsocketHandler do
     {:upgrade, :protocol, :cowboy_websocket}
   end
 
-  def websocket_init(type, req, opts) do
+  def websocket_init(_type, req, _opts) do
     {:ok, req, %{identified: false, api_key: nil, guid: nil}}
   end
 
