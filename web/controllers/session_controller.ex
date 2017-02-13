@@ -22,6 +22,15 @@ defmodule Catsocket.SessionController do
     end
   end
 
+  def destroy(conn) do
+    conn
+    |> delete_session(:current_user)
+    |> put_flash(:info, "You were logged out successfully.")
+    |> redirect(to: "/")
+  end
+
+  ### Private API
+
   defp login(user, _, conn) when is_nil(user) do
     dummy_checkpw()
 
