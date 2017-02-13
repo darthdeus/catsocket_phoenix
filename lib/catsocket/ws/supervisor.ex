@@ -6,9 +6,11 @@ defmodule Catsocket.WS.Supervisor do
   end
 
   def init(:ok) do
-    children = [
-      worker(Catsocket.WS.CowboyServer, [:ok])
-    ]
+    children = if Mix.env == :test do
+      []
+    else
+      [worker(Catsocket.WS.CowboyServer, [:ok])]
+    end
 
     supervise(children, strategy: :one_for_one)
   end
