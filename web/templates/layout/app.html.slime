@@ -14,7 +14,7 @@ html
     nav.navbar.navbar-default
       .container
         .navbar-header
-          = link "CatSocket", to: "/", class: "navbar-brand cat-font"
+          = link "CatSocket", to: page_path(@conn, :index), class: "navbar-brand cat-font"
 
         .collapse.navbar-collapse
           ul.nav.navbar-nav
@@ -26,11 +26,11 @@ html
               a href="/docs" Documentation
 
           ul.nav.navbar-nav.navbar-right
-            li
-              a href="/login" Log in
-
-            li
-              = link "Register", to: "/registrations/new"
+            = if @current_user do
+              li = link "Logout", to: session_path(@conn, :destroy), method: "delete"
+            - else
+              li = link "Log in", to: session_path(@conn, :new)
+              li = link "Register", to: registration_path(@conn, :new)
 
       /header class="header"
       /  nav role="navigation"
