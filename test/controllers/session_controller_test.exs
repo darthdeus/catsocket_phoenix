@@ -29,7 +29,7 @@ defmodule Catsocket.SessionControllerTest do
     end
   end
 
-  test "POST /registration with valid params", %{conn: conn} do
+  test "POST /login with valid credentials", %{conn: conn} do
     password = "password"
     user = insert(:user, password: password, password_confirmation: password)
 
@@ -45,5 +45,20 @@ defmodule Catsocket.SessionControllerTest do
     assert get_session(conn, :current_user) == user.id
 
     assert Repo.one(User)
+  end
+
+  test "DELETE /logout removes the session", %{session_conn: conn} do
+    password = "password"
+    user = insert(:user, password: password, password_confirmation: password)
+
+    conn = conn
+           |> assign(:current_user, user.id)
+           |> delete("/logout")
+
+    assert redirected_to(conn) == page_path(conn, :index)
+    assert get_flash(conn, :info) =~ "You were logged out"
+
+    refute conn.assigns[:current_user]
+    refute get_session(conn, :current_user)
   end
 end

@@ -22,10 +22,11 @@ defmodule Catsocket.SessionController do
     end
   end
 
-  def destroy(conn) do
+  def destroy(conn, _params) do
     conn
     |> delete_session(:current_user)
     |> put_flash(:info, "You were logged out successfully.")
+    |> assign(:current_user, nil)
     |> redirect(to: "/")
   end
 

@@ -32,6 +32,7 @@ defmodule Catsocket.ConnCase do
     end
   end
 
+
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Catsocket.Repo)
 
@@ -39,6 +40,17 @@ defmodule Catsocket.ConnCase do
       Ecto.Adapters.SQL.Sandbox.mode(Catsocket.Repo, {:shared, self()})
     end
 
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    # TODO: clean this up a bit
+    session = Plug.Session.init(store: :cookie,
+                                key: "_app",
+                                encryption_salt: "foo",
+                                signing_salt: "foo")
+
+    conn = Phoenix.ConnTest.build_conn(:get, "/")
+					 |> Map.put(:secret_key_base, String.duplicate("abcdefgh", 8))
+					 |> Plug.Session.call(session)
+					 |> Plug.Conn.fetch_session()
+
+    {:ok, conn: Phoenix.ConnTest.build_conn(), session_conn: conn}
   end
 end

@@ -23,10 +23,10 @@ defmodule Catsocket.Router do
 
     get "/login", SessionController, :new
     post "/login", SessionController, :create
+    delete "/logout", SessionController, :destroy
 
     resources "/projects", ProjectController, only: [:index]
     resources "/password", PasswordController, only: [:new]
-    resources "/sessions", SessionController, only: [:create, :destroy]
     resources "/registrations", RegistrationController, only: [:new, :create]
   end
 
