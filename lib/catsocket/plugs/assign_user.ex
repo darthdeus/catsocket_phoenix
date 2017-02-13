@@ -11,11 +11,11 @@ defmodule Catsocket.Plugs.AssignUser do
 
     if user_id do
       case Repo.get(User, user_id) do
-        nil -> conn
+        nil  -> assign(conn, :current_user, nil)
         user -> assign(conn, :current_user, user)
       end
     else
-      conn
+      assign(conn, :current_user, nil)
     end
   end
 end
