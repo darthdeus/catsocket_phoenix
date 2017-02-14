@@ -35,8 +35,10 @@ defmodule Catsocket.Mixfile do
         :phoenix_slime,
         :httpotion,
 
+        :runtime_tools,
+
         # TODO: do we need these?
-        # :dbg,
+        :dbg,
         # :folsom,
         # :meck,
         :elixir_make,
@@ -71,7 +73,8 @@ defmodule Catsocket.Mixfile do
      {:dialyxir, "~> 0.4", only: [:dev, :test], runtime: false},
 
      # TODO: do we still need these?
-     # {:dbg, "~> 1.0.0"},
+     {:dbg, "~> 1.0.0"},
+
      # {:folsom, github: "boundary/folsom"},
      {:credo, "~> 0.5", only: [:dev, :test]},
      {:edeliver, "~> 1.4.0"},
