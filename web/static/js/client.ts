@@ -41,6 +41,11 @@ interface CatsocketOptions {
 
 interface CatsocketMessage {
   data: any;
+  api_key: string;
+  user: string;
+  id: string;
+  action: string;
+  timestamp: number
 }
 
 const defaultOptions: CatsocketOptions = {
@@ -197,7 +202,7 @@ class CatSocket {
     this._doSend(params);
   };
 
-  _doSend = function (params) {
+  _doSend = function (params: CatsocketMessage) {
     if (this.is_connected && (this.is_identified || params["action"] == "identify")) {
       this.log_debug("->", params);
       this.sent_messages[params["id"]] = params;
@@ -218,7 +223,7 @@ class CatSocket {
     }
   };
 
-  _handleMessage = function (event) {
+  _handleMessage = function (event: CatsocketMessage) {
     if (event["data"]["room"]) {
       var handler = this.handlers[event["data"]["room"]];
 
@@ -236,7 +241,7 @@ class CatSocket {
     }
   };
 
-  _handleAck = function (event) {
+  _handleAck = function (event: CatsocketMessage) {
     var sent_message = this.sent_messages[event["id"]];
 
     if (sent_message) {
@@ -254,7 +259,7 @@ class CatSocket {
     }
   };
 
-  _unrecognizedMessage = function (event) {
+  _unrecognizedMessage = function (event: CatsocketMessage) {
     console.error("Unrecognized message type", event["action"], "with data", event);
   };
 
@@ -267,7 +272,7 @@ class CatSocket {
     }
   };
 
-  join = function (room, handler, last_timestamp) {
+  join = function (room: string, handler: any, last_timestamp: number) {
     if (handler) {
       this.handlers[room] = handler;
     }
@@ -280,7 +285,7 @@ class CatSocket {
     });
   };
 
-  leave = function (room) {
+  leave = function (room: string) {
     removeValue(this.joined_rooms, room);
     delete this.handlers[room];
     this.send("leave", {"room": room});
@@ -307,7 +312,7 @@ class CatSocket {
       var RESEND_TIMEOUT = 10000;
 
       var to_delete = [];
-      var to_keep = {};
+      var to_keep: any = {};
 
       for (var id in this.sent_messages) {
         if (this.sent_messages.hasOwnProperty(id)) {
@@ -331,7 +336,6 @@ class CatSocket {
 
     }.bind(this), 2000);
   };
-
 }
 
 export default catsocket;
