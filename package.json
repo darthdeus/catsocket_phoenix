@@ -18,5 +18,6 @@
     "redux": "^3.6.0"
   },
   "devDependencies": {
+    "brunch": "^2.10.7"
   }
 }

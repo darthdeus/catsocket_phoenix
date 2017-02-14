@@ -33,7 +33,7 @@ defmodule Catsocket.ProjectController do
     project = Ecto.Changeset.change(project, name: project_params["name"])
 
     case Repo.update(project) do
-      {:ok, struct} -> 
+      {:ok, _} ->
         conn
         |> put_flash(:info, "You have successfully updated project.")
         |> redirect(to: "/projects")
