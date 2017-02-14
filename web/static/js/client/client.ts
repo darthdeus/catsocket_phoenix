@@ -83,7 +83,7 @@ const catsocket = {
     if (process.env.NODE_ENV !== "production" && !options["production"]) {
         host = host || "ws://localhost:9000";
     } else {
-        host = host || "wss://catsocket.com";
+        host = host || "ws://catsocket.com";
     }
 
     const status_changed: StatusChangedHandler = options.status_changed || function() {};
