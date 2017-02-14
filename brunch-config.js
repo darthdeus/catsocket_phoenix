@@ -18,12 +18,13 @@ exports.config = {
       //     "web/static/vendor/js/bootstrap.min.js"
       //   ]
       // }
+
     },
     stylesheets: {
       joinTo: "css/bundle.css",
-      // order: {
-      //   after: ["web/static/css/app.scss"] // concat app.css last
-      // }
+      order: {
+        after: ["web/static/css/app.scss"] // concat app.css last
+      }
     },
     // templates: {
     //   joinTo: "js/app.js"
@@ -31,21 +32,14 @@ exports.config = {
   },
 
   conventions: {
-    // This option sets where we should place non-css and non-js assets in.
-    // By default, we set this to "/web/static/assets". Files in this directory
-    // will be copied to `paths.public`, which is "priv/static" by default.
     assets: /^(web\/static\/assets)/
   },
 
-  // Phoenix paths configuration
   paths: {
-    // Dependencies and current project directories to watch
     watched: [
       "web/static",
       "test/static"
     ],
-
-    // Where to compile files to
     public: "priv/static"
   },
 
@@ -69,11 +63,11 @@ exports.config = {
     }
   },
 
-  modules: {
-    autoRequire: {
-      "js/app.js": ["web/static/js/app"]
-    }
-  },
+  // modules: {
+  //   autoRequire: {
+  //     "js/app.js": ["web/static/js/app"]
+  //   }
+  // },
 
   npm: {
     enabled: true

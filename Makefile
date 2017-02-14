@@ -1,2 +1,3 @@
 default:
-	mix test
+	brunch build
+	# mix test

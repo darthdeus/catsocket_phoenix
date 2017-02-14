@@ -6,6 +6,8 @@
     "watch": "brunch watch --stdin"
   },
   "dependencies": {
+    "bootstrap-sass": "^3.3.7",
+    "brunch": "^2.10.7",
     "font-awesome": "^4.7.0",
     "jquery": "^3.1.1",
     "node-sass": "^4.3.0",
@@ -15,9 +17,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
-    "redux": "^3.6.0"
-  },
-  "devDependencies": {
-    "brunch": "^2.10.7"
+    "redux": "^3.6.0",
+    "sass-brunch": "^2.10.2"
   }
 }
