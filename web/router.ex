@@ -25,7 +25,7 @@ defmodule Catsocket.Router do
     post "/login", SessionController, :create
     delete "/logout", SessionController, :destroy
 
-    resources "/projects", ProjectController, only: [:index]
+    resources "/projects", ProjectController
     resources "/password", PasswordController, only: [:new]
     resources "/registrations", RegistrationController, only: [:new, :create]
   end

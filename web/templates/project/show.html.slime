@@ -1,0 +1,18 @@
+.container
+  .row.padding-top
+    .col-md-8.col-md-offset-2
+      h1
+        = @project.name
+      .keys
+        h2 Public key:
+        .well
+          = @project.public_key
+        h2 Private key:
+        .well
+          = @project.private_key
+      .edit
+        = form_for @changeset, project_path(@conn, :update, @project.id), [as: :project], fn f ->
+          = input f, :name, :text
+
+          = submit_button "Update name"
+

@@ -17,6 +17,8 @@ defmodule Catsocket.User do
     field :password_confirmation, :string, virtual: true
 
     timestamps()
+
+    has_many :projects, Catsocket.Project
   end
 
   @doc """
