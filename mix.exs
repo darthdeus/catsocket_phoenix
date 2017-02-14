@@ -36,6 +36,7 @@ defmodule Catsocket.Mixfile do
         :httpotion,
 
         :runtime_tools,
+        :wobserver,
 
         # TODO: do we need these?
         :dbg,
@@ -74,6 +75,7 @@ defmodule Catsocket.Mixfile do
 
      # TODO: do we still need these?
      {:dbg, "~> 1.0.0"},
+     {:wobserver, "~> 0.1"},
 
      # {:folsom, github: "boundary/folsom"},
      {:credo, "~> 0.5", only: [:dev, :test]},
