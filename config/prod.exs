@@ -16,8 +16,9 @@ config :catsocket, :environment, :prod
 config :catsocket, Catsocket.Endpoint,
   # http: [port: {:system, "PORT"}],
   http: [port: 4000],
-  url: [host: "catsocket.com", port: 80],
-  cache_static_manifest: "priv/static/manifest.json"
+  url: [host: "catsocket.com"],
+  cache_static_manifest: "priv/static/manifest.json",
+  server: true
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -51,7 +52,8 @@ config :logger, level: :info
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start the server for all endpoints:
 #
-#     config :phoenix, :serve_endpoints, true
+config :phoenix, :serve_endpoints, true
+
 #
 # Alternatively, you can configure exactly which server to
 # start per endpoint:
