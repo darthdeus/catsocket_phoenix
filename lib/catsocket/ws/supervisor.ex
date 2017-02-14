@@ -6,7 +6,7 @@ defmodule Catsocket.WS.Supervisor do
   end
 
   def init(:ok) do
-    children = if Mix.env == :test do
+    children = if Application.get_env(:catsocket, :environment) == :test do
       []
     else
       [worker(Catsocket.WS.CowboyServer, [:ok])]
