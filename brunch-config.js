@@ -2,7 +2,11 @@ exports.config = {
   // See http://brunch.io/#documentation for docs.
   files: {
     javascripts: {
-      joinTo: "js/app.js"
+      joinTo: {
+        "js/app.js": /^(web\/static\/js)/,
+        "js/client.js": /^web\/static\/js\/client.ts/
+      }
+
 
       // To use a separate vendor.js bundle, specify two files path
       // http://brunch.io/docs/config#-files-
@@ -45,6 +49,7 @@ exports.config = {
 
   // Configure your plugins
   plugins: {
+    brunchTypescript: {},
     babel: {
       presets: ['stage-2', 'es2015', 'es2016', 'react'],
       // Do not use ES6 compiler in vendor code

@@ -2605,6 +2605,17 @@ type-is@~1.6.14:
     media-typer "0.3.0"
     mime-types "~2.1.13"
 
+typescript-brunch@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/typescript-brunch/-/typescript-brunch-2.2.0.tgz#b70bc39b465c0803fd218592cc8d2cbfaa2ab2d0"
+  dependencies:
+    anymatch "^1.3.0"
+    typescript "2.1.*"
+
+typescript@2.1.*:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.6.tgz#40c7e6e9e5da7961b7718b55505f9cac9487a607"
+
 ua-parser-js@^0.7.9:
   version "0.7.12"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.12.tgz#04c81a99bdd5dc52263ea29d24c6bf8d4818a4bb"
