@@ -1,12 +1,12 @@
-var guid = function guid() {
-    var s4 = function () {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    };
+const guid = (): string => {
+  const s4 = () => {
+    return Math.floor((1 + Math.random()) * 0x10000)
+               .toString(16)
+               .substring(1);
 
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-        s4() + '-' + s4() + s4() + s4();
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+         s4() + '-' + s4() + s4() + s4();
 };
 
 var user = function user() {
@@ -23,42 +23,60 @@ var user = function user() {
     }
 };
 
-var removeValue = function (arr, value) {
+var removeValue = function<T>(arr: T[], value: T) {
     var index = arr.indexOf(value);
     if (index !== -1) {
         arr.splice(index, 1);
     }
 };
 
-var catsocket = {};
-/** @define {boolean} */
-var DEBUG_SERVER = true;
+const DEBUG_SERVER: boolean = true;
 
-catsocket["init"] = function (api_key, options) {
-    options = options || {};
-    var user_id = options["user_id"];
+interface CatsocketOptions {
+  user_id: string;
+  host: string;
+  production: boolean;
+  status_changed: any;
+}
+
+interface CatsocketMessage {
+  data: any;
+}
+
+const defaultOptions: CatsocketOptions = {
+  production: true,
+  user_id: null,
+  host: null,
+  status_changed: null,
+}
+
+const catsocket = {
+  init(api_key: string, options: CatsocketOptions = defaultOptions) {
     var host = options["host"];
 
     // TODO - asssert that API key exists
-    user_id = user_id || guid();
+    const user_id = options.user_id || guid();
     if (DEBUG_SERVER && !options["production"]) {
         host = host || "ws://localhost:9000";
     } else {
         host = host || "wss://catsocket.com";
     }
 
-    var status_changed = options["status_changed"] || function() {};
-    var cat = new CatSocket(api_key, user_id, host, status_changed);
+    const status_changed = options.status_changed || function() {};
+    const cat = new CatSocket(api_key, user_id, host, status_changed);
     cat.connect();
 
     cat.log_debug("Trying to connect...", null);
 
     return cat;
+  }
 };
+
+/** @define {boolean} */
 
 /** @constructor */
 class CatSocket {
-  public socket: any;
+  public socket: string;
   public is_identified: any;
   public is_connected: any;
   public user_id: any;
@@ -68,10 +86,13 @@ class CatSocket {
   public queue: any;
   public sent_messages: any;
   public joined_rooms: any;
+  public silent: boolean;
+  public debug: boolean;
+  public status_changed: any;
 
-  constructor(api_key, user_id, host, status_changed) {
-    this["silent"] = false;
-    this["debug"] = false;
+  constructor(api_key: string, user_id: string, host: string, status_changed: any) {
+    this.silent = false;
+    this.debug = false;
 
     if (!api_key) { throw new Error("API key is required."); }
 
@@ -86,7 +107,7 @@ class CatSocket {
     this.queue = [];
     this.sent_messages = [];
     this.joined_rooms = [];
-    this["status_changed"] = status_changed;
+    this.status_changed = status_changed;
 
     this._startTimer();
 
@@ -95,14 +116,14 @@ class CatSocket {
 
   /** @type {function(...*)} */
   log = function () {
-    if (!this["silent"]) {
+    if (!this.silent) {
       console.log.apply(console, arguments);
     }
   };
 
   /** @type {function(...*)} */
   log_debug = function (a: any, b: any) {
-    if (this["debug"]) {
+    if (this.debug) {
       console.log.apply(console, arguments);
     }
   };
@@ -118,11 +139,11 @@ class CatSocket {
 
     this["status_changed"]("connecting");
     var url = this.host + "/b/ws";
-    var socket = this.socket = new WebSocket(url);
-    this._setHandlers(socket);
+    this.socket = new WebSocket(url);
+    this._setHandlers(this.socket);
   };
 
-  _setHandlers = function (socket) {
+  _setHandlers = function (socket: WebSocket) {
     socket.onopen = function () {
       this["status_changed"]("connected");
       this.is_connected = true;
@@ -142,7 +163,7 @@ class CatSocket {
       this["status_changed"]("closed");
     }.bind(this);
 
-    socket.onmessage = function (message) {
+    socket.onmessage = function(message: CatsocketMessage) {
       // if (this["debug"]) console.group("onmessage");
 
       // TODO - check if there is something else on the message that could be used/inspected?
@@ -163,7 +184,7 @@ class CatSocket {
     }.bind(this);
   };
 
-  send = function (action, data) {
+  send = function (action: string, data: any) {
     var params = {
       "api_key": this.api_key,
       "user": this.user_id,
@@ -265,7 +286,7 @@ class CatSocket {
     this.send("leave", {"room": room});
   };
 
-  broadcast = function (room, message) {
+  broadcast = function (room: string, message: CatsocketMessage) {
     this.send("broadcast", {"room": room, "message": message});
   };
 
