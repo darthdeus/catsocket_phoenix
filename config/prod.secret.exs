@@ -14,7 +14,7 @@ config :catsocket, Catsocket.Endpoint,
 # Configure your database
 config :catsocket, Catsocket.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: "deploy",
+  password: "deploy",
   database: "catsocket_phoenix_prod",
   pool_size: 20
