@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
-    app: "./web/static/js/app.jsx",
+    app: "./web/static/js/app.tsx",
     client: "./web/static/js/client/client.ts",
   },
 
@@ -60,25 +60,20 @@ module.exports = {
           {
             loader: "babel-loader",
             options: {
-              presets: ["es2015", "react"]
-            }
-          }
-        ]
-      },
-
-      {
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: "babel-loader",
-            options: {
-              presets: ["es2015", "react"]
+              presets: ["react"]
             }
           },
           "ts-loader"
         ]
-      }
+      },
+
+      // {
+      //   test: /\.tsx?$/,
+      //   exclude: /node_modules/,
+      //   use: [
+      //     "ts-loader"
+      //   ]
+      // }
     ]
   },
 

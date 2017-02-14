@@ -7,10 +7,10 @@ interface MessageHandler {
 }
 
 interface CatsocketOptions {
-  user_id: string;
-  host: string;
+  user_id?: string;
+  host?: string;
   production: boolean;
-  status_changed: StatusChangedHandler;
+  status_changed?: StatusChangedHandler;
 }
 
 type ClientAction = "join" | "leave" | "broadcast" | "identify";
@@ -146,7 +146,7 @@ class MessageSender {
     }
   };
 
-  join(room: string, handler: any, last_timestamp: number) {
+  join(room: string, handler: any, last_timestamp?: number) {
     if (handler) {
       this.cat.handlers[room] = handler;
     }
@@ -165,7 +165,7 @@ class MessageSender {
     this.send("leave", {"room": room});
   };
 
-  broadcast(room: string, message: ClientMessage) {
+  broadcast(room: string, message: any) {
     this.send("broadcast", {"room": room, "message": message});
   };
 
