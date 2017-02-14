@@ -1,7 +1,7 @@
 APP="catsocket"
 
-BUILD_HOST="localhost"
-BUILD_USER="darth"
+BUILD_HOST="cat"
+BUILD_USER="deploy"
 BUILD_AT="/tmp/edeliver/catsocket/builds"
 
 STAGING_HOSTS="cat"
@@ -27,7 +27,7 @@ pre_erlang_clean_compile() {
 
       mkdir -p priv/static
 
-      ~/.node_modules/bin/yarn
+      yarn
 
       ./node_modules/webpack/bin/webpack.js
 
