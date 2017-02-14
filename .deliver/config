@@ -1,6 +1,6 @@
 APP="catsocket"
 
-BUILD_HOST="cat"
+BUILD_HOST="localhost"
 BUILD_USER="deploy"
 BUILD_AT="/tmp/edeliver/catsocket/builds"
 
@@ -12,7 +12,19 @@ pre_erlang_get_and_update_deps() {
   local _prod_secret_path="/home/deploy/prod.secret.exs"
   if [ "$TARGET_MIX_ENV" = "prod" ]; then
     __sync_remote "
+      set -e
+
+      cd '$BUILD_AT'
+
       ln -nsf '$_prod_secret_path' '$BUILD_AT/config/prod.secret.exs'
+
+      mkdir -p priv/static
+
+      npm install
+
+      ./node_modules/webpack/bin/webpack.js
+
+      APP='$APP' MIX_ENV='$TARGET_MIX_ENV' $MIX_CMD phoenix.digest $SILENCE
     "
   fi
 }
