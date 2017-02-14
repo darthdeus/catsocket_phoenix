@@ -1,26 +1,33 @@
 APP="catsocket"
 
 BUILD_HOST="localhost"
-BUILD_USER="deploy"
+BUILD_USER="darth"
 BUILD_AT="/tmp/edeliver/catsocket/builds"
 
 STAGING_HOSTS="cat"
 STAGING_USER="deploy"
 DELIVER_TO="/opt/apps/catsocket_phoenix"
 
-pre_erlang_get_and_update_deps() {
-  local _prod_secret_path="/home/deploy/prod.secret.exs"
+# pre_erlang_get_and_update_deps() {
+#   local _prod_secret_path="~/prod.secret.exs"
+#
+#   if [ "$TARGET_MIX_ENV" = "prod" ]; then
+#     __sync_remote "
+#       ln -nsf '$_prod_secret_path' '$BUILD_AT/config/prod.secret.exs'
+#     "
+#   fi
+# }
+
+pre_erlang_clean_compile() {
   if [ "$TARGET_MIX_ENV" = "prod" ]; then
     __sync_remote "
       set -e
 
       cd '$BUILD_AT'
 
-      ln -nsf '$_prod_secret_path' '$BUILD_AT/config/prod.secret.exs'
-
       mkdir -p priv/static
 
-      npm install
+      ~/.node_modules/bin/yarn
 
       ./node_modules/webpack/bin/webpack.js
 
