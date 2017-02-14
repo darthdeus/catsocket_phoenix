@@ -13,7 +13,7 @@
 // to also remove its path from "config.paths.watched".
 import "phoenix_html";
 import React from "react";
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom/lib/ReactMount';
 import $ from 'jquery';
 import '../css/app.scss'
 import catsocket from 'client/client';
@@ -177,7 +177,7 @@ import catsocket from 'client/client';
   }
 
   window.mountChat = function(username, element) {
-    ReactDOM.render(React.createElement(Chat, {username: username}), element);
+    render(React.createElement(Chat, {username: username}), element);
   };
 
   var buildPainter = function buildPainter(ctx) {
