@@ -16,7 +16,7 @@ import React from "react";
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import '../css/app.scss'
-import catsocket from 'client';
+import catsocket from 'client/client';
 
 // Import local files
 //

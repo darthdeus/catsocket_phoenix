@@ -2,6 +2,16 @@
 # yarn lockfile v1
 
 
+"@types/node@*":
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.5.tgz#96a0f0a618b7b606f1ec547403c00650210bfbb7"
+
+"@types/websocket@^0.0.32":
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/@types/websocket/-/websocket-0.0.32.tgz#72018fe908a2bafd508fd68869c83ffbe3c7f14d"
+  dependencies:
+    "@types/node" "*"
+
 abbrev@1:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.0.9.tgz#91b4792588a7738c25f35dd6f63752a2f8776135"

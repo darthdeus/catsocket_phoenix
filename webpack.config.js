@@ -3,11 +3,14 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 // const jsdir = path.resolve(__dirname, "priv/static/js");
 
 module.exports = {
-  entry: "./web/static/js/app.jsx",
+  entry: {
+    app: "./web/static/js/app.jsx",
+    client: "./web/static/js/client/client.ts",
+  },
 
   output: {
     path: path.resolve(__dirname, "priv/static/js"),
-    filename: "app.js"
+    filename: "[name].js"
   },
 
   resolve: {
