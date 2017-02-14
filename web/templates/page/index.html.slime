@@ -8,13 +8,6 @@
         .chat-box.first#home-chat-left
         .chat-box#home-chat-right
 
-      javascript:
-        document.addEventListener("DOMContentLoaded", () => {
-          mountChat("Jack", document.getElementById("home-chat-left"));
-          mountChat("Kate", document.getElementById("home-chat-right"));
-        })
-
-
       p.cta-button.centered
         = link "Sign up for free", to: "/register", class: "btn btn-default btn-large"
       p.centered No credit card required
@@ -157,13 +150,6 @@
               canvas.painter.painter-first width="360" height="200"
             .col-md-6
               canvas.painter.painter-second width="360" height="200"
-
-
-              javascript:
-                document.addEventListener("DOMContentLoaded", () => {
-                  mountPaint(document.querySelector(".painter-first"));
-                  mountPaint(document.querySelector(".painter-second"));
-                })
 
           p
             | An application like this one is sending about 100 events per
