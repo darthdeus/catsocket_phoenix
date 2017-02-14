@@ -1,6 +1,10 @@
 const path = require("path");
+const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 // const jsdir = path.resolve(__dirname, "priv/static/js");
+
+const devBuild = process.env.NODE_ENV !== 'production';
+const nodeEnv = devBuild ? 'development' : 'production';
 
 module.exports = {
   entry: {
@@ -18,6 +22,9 @@ module.exports = {
     modules: ["node_modules", path.resolve(__dirname, "web/static/js")],
     extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
+
+  // devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
 
   module: {
     rules: [
@@ -82,5 +89,8 @@ module.exports = {
       { from: "web/static/assets/", to: ".." }
     ]),
 
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(nodeEnv)
+    })
   ]
 };

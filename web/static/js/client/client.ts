@@ -78,7 +78,7 @@ const catsocket = {
 
     // TODO - asssert that API key exists
     const user_id = options.user_id || guid();
-    if (DEBUG_SERVER && !options["production"]) {
+    if (process.env.NODE_ENV && !options["production"]) {
         host = host || "ws://localhost:9000";
     } else {
         host = host || "wss://catsocket.com";
@@ -180,7 +180,7 @@ class MessageSender {
 
   _startTimer() {
     this.cat._timer_interval = setInterval(function () {
-      this.log_debug("timer ticks");
+      this.cat.log_debug("timer ticks");
       var now = +new Date();
 
       var RESEND_TIMEOUT = 10000;
@@ -327,7 +327,7 @@ class CatSocket {
     socket.onopen = function () {
       this.status_changed("connected");
       this.is_connected = true;
-      this.send("identify", {});
+      this.sender.send("identify", {});
     }.bind(this);
 
     socket.onclose = function () {

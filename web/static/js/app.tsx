@@ -13,7 +13,7 @@
 // to also remove its path from "config.paths.watched".
 import "phoenix_html";
 import * as React from "react";
-import { render } from "react-dom/lib/ReactMount";
+import * as ReactDOM from "react-dom";
 import * as $ from 'jquery';
 import '../css/app.scss'
 import catsocket from 'client/client';
@@ -56,7 +56,7 @@ class ChatForm extends React.Component<any, any> {
 
     if (msg) {
       node.value = "";
-      this.props.cat.broadcast(ROOM, JSON.stringify({
+      this.props.cat.sender.broadcast(ROOM, JSON.stringify({
         text: msg,
         author: this.props.username
       }));
@@ -81,7 +81,7 @@ class ChatBox extends React.Component<any, any> {
 
   componentDidMount() {
     const self = this;
-    this.props.cat.join(ROOM, function(message) {
+    this.props.cat.sender.join(ROOM, function(message) {
       var data = JSON.parse(message);
 
       self.setState(function (old) {
@@ -178,7 +178,7 @@ class Chat extends React.Component<any, any> {
 }
 
 const mountChat = function(username, element) {
-  render(React.createElement(Chat, {username: username}), element);
+  ReactDOM.render(React.createElement(Chat, {username: username}), element);
 };
 
 var buildPainter = function buildPainter(ctx) {
