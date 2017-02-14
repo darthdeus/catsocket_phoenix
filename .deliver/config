@@ -29,7 +29,7 @@ pre_erlang_clean_compile() {
 
       yarn
 
-      ./node_modules/webpack/bin/webpack.js
+      NODE_ENV=production ./node_modules/webpack/bin/webpack.js
 
       APP='$APP' MIX_ENV='$TARGET_MIX_ENV' $MIX_CMD phoenix.digest $SILENCE
     "

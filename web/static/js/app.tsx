@@ -18,6 +18,8 @@ import * as $ from 'jquery';
 import '../css/app.scss'
 import catsocket from 'client/client';
 
+const PRODUCTION_BACKEND = process.env.NODE_ENV === "production";
+
 // Import local files
 //
 // Local files can be imported directly using relative
@@ -142,7 +144,7 @@ class Chat extends React.Component<any, any> {
     super(props);
 
     var cat = catsocket.init("b766496f-34b0-4967-8c14-7534dc57d38d", {
-      production: true
+      production: PRODUCTION_BACKEND
     });
 
     this.state = {
@@ -193,23 +195,16 @@ var buildPainter = function buildPainter(ctx) {
 const mountPaint = function mountPaint(canvas) {
   var ctx = canvas.getContext('2d');
 
-  var mouse = {x: 0, y: 0};
-
   var paintAt = buildPainter(ctx);
 
   var ROOM = "painter"
-  var cat = catsocket.init("b766496f-34b0-4967-8c14-7534dc57d38d", { production: true });
+  var cat = catsocket.init("b766496f-34b0-4967-8c14-7534dc57d38d", {
+    production: PRODUCTION_BACKEND
+  });
 
   cat.sender.join(ROOM, function(msg) {
     paintAt(msg.x, msg.y);
   });
-
-  canvas.addEventListener("mousemove", function(e) {
-    var offset = $(this).parent().offset();
-
-    mouse.x = e.pageX - offset.left - 15;
-    mouse.y = e.pageY - offset.top;
-  }, false);
 
   /* Drawing on Paint App */
   ctx.lineWidth = 3;
@@ -217,9 +212,14 @@ const mountPaint = function mountPaint(canvas) {
   ctx.lineCap = "round";
   ctx.strokeStyle = "blue";
 
-  canvas.addEventListener("mousemove", function(e) {
-    cat.sender.broadcast(ROOM, { x: mouse.x, y: mouse.y });
-    paintAt(mouse.x, mouse.y);
+  canvas.addEventListener("mousemove", function(e: MouseEvent) {
+    const x = e.offsetX;
+    const y = e.offsetY;
+
+    console.log(x, y);
+
+    cat.sender.broadcast(ROOM, { x, y });
+    paintAt(x, y);
   }, false);
 
 };

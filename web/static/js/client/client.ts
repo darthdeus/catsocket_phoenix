@@ -9,7 +9,7 @@ interface MessageHandler {
 interface CatsocketOptions {
   user_id?: string;
   host?: string;
-  production: boolean;
+  production?: boolean;
   status_changed?: StatusChangedHandler;
 }
 
@@ -78,7 +78,9 @@ const catsocket = {
 
     // TODO - asssert that API key exists
     const user_id = options.user_id || guid();
-    if (process.env.NODE_ENV && !options["production"]) {
+
+    console.log("choosing env", process.env.NODE_ENV);
+    if (process.env.NODE_ENV !== "production" && !options["production"]) {
         host = host || "ws://localhost:9000";
     } else {
         host = host || "wss://catsocket.com";
