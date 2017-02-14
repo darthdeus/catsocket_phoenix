@@ -3,7 +3,7 @@
     "module": "commonjs",
     "target": "es5",
     "jsx": "preserve",
-    "noImplicitAny": true,
+    // "noImplicitAny": true,
     "baseUrl": "web/static/js/",
     "paths": {
       "*": ["*"]
@@ -12,9 +12,9 @@
   "exclude": [
     "node_modules"
   ],
-  "files": [
-    "web/static/js/global.d.ts"
-  ],
+  // "files": [
+  //   "web/static/js/global.d.ts"
+  // ],
   "include": [
     "web/static/js/**/*.ts",
     "web/static/js/**/*.tsx"
