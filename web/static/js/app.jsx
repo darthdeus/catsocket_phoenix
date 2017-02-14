@@ -15,8 +15,8 @@ import "phoenix_html";
 import React from "react";
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import catsocket from './client';
 import '../css/app.scss'
+import catsocket from 'client';
 
 // Import local files
 //

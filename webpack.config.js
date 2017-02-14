@@ -1,43 +1,80 @@
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const jsdir = path.resolve(__dirname, "priv/static/js");
+// const jsdir = path.resolve(__dirname, "priv/static/js");
 
 module.exports = {
   entry: "./web/static/js/app.jsx",
 
   output: {
-    path: jsdir,
+    path: path.resolve(__dirname, "priv/static/js"),
     filename: "app.js"
   },
 
   resolve: {
-    modules: ["node_modules", jsdir]
+    // modules: ["node_modules", jsdir],
+    modules: ["node_modules", path.resolve(__dirname, "web/static/js")],
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
 
   module: {
-    loaders: [
+    rules: [
 			{
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff"
+        use: "url-loader?limit=10000&mimetype=application/font-woff"
       },
 
 			{
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file-loader"
+        use: "file-loader"
       },
 
       {
         test: /\.scss$/,
-        loaders: ["style-loader", "css-loader", "resolve-url", "sass-loader"]
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader"
+        ]
       },
 
       {
-        test: /\.(js|jsx)$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: "babel-loader",
-        query: {
-          presets: ["es2015", "react"]
-        }
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["es2015", "react"]
+            }
+          }
+        ]
+      },
+
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["es2015", "react"]
+            }
+          }
+        ]
+      },
+
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["es2015", "react"]
+            }
+          },
+          "ts-loader"
+        ]
       }
     ]
   },

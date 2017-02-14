@@ -30,7 +30,7 @@ var removeValue = function (arr, value) {
     }
 };
 
-var catsocket = window["catsocket"] = {};
+var catsocket = {};
 /** @define {boolean} */
 var DEBUG_SERVER = true;
 
@@ -51,7 +51,7 @@ catsocket["init"] = function (api_key, options) {
     var cat = new CatSocket(api_key, user_id, host, status_changed);
     cat.connect();
 
-    cat.log_debug("Trying to connect...");
+    cat.log_debug("Trying to connect...", null);
 
     return cat;
 };
