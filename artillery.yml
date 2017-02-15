@@ -1,0 +1,20 @@
+config:
+  target: "ws://catsocket.com/b/ws"
+  phases:
+    -
+      duration: 20
+      arrivalRate: 10
+
+  ws:
+    rejectUnauthorized: false
+
+scenarios:
+  -
+    engine: "ws"
+    flow:
+      -
+        send: "hello"
+      -
+        think: 1
+      -
+        send: "world"
