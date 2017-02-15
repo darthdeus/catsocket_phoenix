@@ -10,9 +10,16 @@
         h2 Private key:
         .well
           = @project.private_key
-      .edit
+      .edit.row
         = form_for @changeset, project_path(@conn, :update, @project.id), [as: :project], fn f ->
-          = input f, :name, :text
+          .col-md-8
+            = input f, :name, :text
+          .col-md-4
+            = submit_button "Update name"
+      hr
+      .row
+        = link "Go back", to: project_path(@conn, :index), class: "btn btn-success"
+        p or
+        = link "Delete", to: project_path(@conn, :delete, @project.id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger"
 
-          = submit_button "Update name"
 

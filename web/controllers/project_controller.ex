@@ -44,6 +44,15 @@ defmodule Catsocket.ProjectController do
     end
   end
 
+  def delete(conn, %{"id" => id}) do
+    project = Repo.get!(Project, id)
+    Repo.delete(project)
+
+    conn
+    |> put_flash(:info, "Project was deleted.")
+    |> redirect(to: "/projects")
+  end
+
   defp create_project(project_params) do
     %Project{public_key: Ecto.UUID.generate, private_key: Ecto.UUID.generate}
     |> Project.changeset(project_params)
