@@ -63,39 +63,6 @@ const removeValue = function<T>(arr: T[], value: T) {
     }
 };
 
-const DEBUG_SERVER: boolean = true;
-
-const defaultOptions: CatsocketOptions = {
-  production: true,
-  user_id: null,
-  host: null,
-  status_changed: (status) => {},
-}
-
-const catsocket = {
-  init(api_key: string, options: CatsocketOptions = defaultOptions) {
-    var host = options["host"];
-
-    // TODO - asssert that API key exists
-    const user_id = options.user_id || guid();
-
-    console.log("choosing env", process.env.NODE_ENV);
-    if (process.env.NODE_ENV !== "production" && !options["production"]) {
-        host = host || "ws://localhost:9000";
-    } else {
-        host = host || "ws://catsocket.com";
-    }
-
-    const status_changed: StatusChangedHandler = options.status_changed || function() {};
-    const cat = new CatSocket(api_key, user_id, host, status_changed);
-    cat.connect();
-
-    cat.log_debug("Trying to connect...", null);
-
-    return cat;
-  }
-};
-
 class MessageSender {
   public cat: CatSocket;
 
@@ -379,5 +346,40 @@ class CatSocket {
     }
   };
 }
+
+const DEBUG_SERVER: boolean = true;
+
+const defaultOptions: CatsocketOptions = {
+  production: true,
+  user_id: null,
+  host: null,
+  status_changed: (status) => {},
+}
+
+const catsocket = {
+  init(api_key: string, options: CatsocketOptions = defaultOptions) {
+    var host = options["host"];
+
+    // TODO - asssert that API key exists
+    const user_id = options.user_id || guid();
+
+    console.log("choosing env", process.env.NODE_ENV);
+    if (process.env.NODE_ENV !== "production" && !options["production"]) {
+        host = host || "ws://localhost:9000";
+    } else {
+        host = host || "ws://catsocket.com";
+    }
+
+    const status_changed: StatusChangedHandler = options.status_changed || function() {};
+    const cat = new CatSocket(api_key, user_id, host, status_changed);
+    cat.connect();
+
+    cat.log_debug("Trying to connect...", null);
+
+    return cat;
+  }
+};
+
+
 
 export default catsocket;

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd">
+<tsung loglevel="notice" version="1.0">
+  <clients>
+    <client host="localhost" use_controller_vm="false" maxusers="64000" />
+  </clients>
+
+  <servers>
+    <server host="catsocket.com" port="80" type="tcp" />
+  </servers>
+
+  <load>
+    <arrivalphase phase="1" duration="100" unit="second">
+      <users maxnumber="100000" arrivalrate="1000" unit="second" />
+    </arrivalphase>
+  </load>
+
+  <sessions>
+    <session name="websocket" probability="100" type="ts_websocket">
+        <request>
+          <websocket type="connect" path="/b/ws"></websocket>
+        </request>
+
+        <request subst="true">
+            <websocket type="message">{"name":"Kemal"}</websocket>
+        </request>
+
+        <for var="i" from="1" to="100" incr="1">
+          <thinktime value="10"/>
+        </for>
+    </session>
+  </sessions>
+</tsung>
+
