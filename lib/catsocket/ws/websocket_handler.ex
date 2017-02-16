@@ -12,7 +12,7 @@ defmodule Catsocket.WS.WebsocketHandler do
   end
 
   def websocket_terminate(reason, _req, _state) do
-    IO.puts "connection closed with reason #{inspect reason}"
+    # IO.puts "connection closed with reason #{inspect reason}"
     Catsocket.Sockets.Users.remove(Catsocket.Sockets.Users, self())
     Catsocket.Sockets.Rooms.remove_user(Catsocket.Sockets.Rooms, self())
 
@@ -127,6 +127,7 @@ defmodule Catsocket.WS.WebsocketHandler do
   defp handle_join(message, req, state) do
     if ! Map.has_key?(message["data"], "room"), do: throw {:invalid, "room"}
 
+    # IO.puts "joined"
     room = message["data"]["room"]
 
     Catsocket.Sockets.Rooms.join(Catsocket.Sockets.Rooms, message["api_key"], room, state[:guid])
