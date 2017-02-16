@@ -1,9 +1,9 @@
 config:
-  target: "ws://catsocket.com/b/ws"
+  target: "ws://localhost:9000/b/ws"
   phases:
     -
       duration: 20
-      arrivalRate: 10
+      arrivalRate: 1000
 
   ws:
     rejectUnauthorized: false
@@ -13,8 +13,12 @@ scenarios:
     engine: "ws"
     flow:
       -
-        send: "hello"
+        send: '{"id":"a675feb5-21e0-76b3-dfde-4f9f2d4e7a77","data":{},"action":"identify","user":"e33eeef4-5768-0c10-e225-7711cb298332","api_key":"b766496f-34b0-4967-8c14-7534dc57d38d","timestamp":1487203950411}'
       -
         think: 1
       -
-        send: "world"
+        send: '{"id":"dabab23e-621d-35a7-40af-f05402cbae73","data":{"room":"chat"},"action":"join","user":"e33eeef4-5768-0c10-e225-7711cb298332","api_key":"b766496f-34b0-4967-8c14-7534dc57d38d","timestamp":1487203950350}'
+      -
+        think: 1
+      -
+        send: '{"id":"ef638b90-625d-4613-c895-19da887fe340","data":{"room":"chat","message":"{\"text\":\"fdsafsd\",\"author\":\"Kate\"}"},"action":"broadcast","user":"a1c04ce1-d3b8-3b82-cd40-2a4441f47cda","api_key":"b766496f-34b0-4967-8c14-7534dc57d38d","timestamp":1487204232432}'
