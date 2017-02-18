@@ -45,7 +45,7 @@ defmodule Catsocket.Sockets.MessageCache do
   def handle_call({:cleanup, expire_in}, _from, state) do
     current_time = Timex.Duration.epoch(:seconds)
 
-    to_delete = :ets.foldl(fn {guid, time}, acc ->
+    to_delete = :ets.foldl(fn ({guid, time}, acc) ->
       if time >= (current_time + expire_in) do
         [guid|acc]
       else

@@ -1,7 +1,8 @@
 defmodule Catsocket.Socket.Limits do
   use GenServer
-  def start_link(opts \\ [paid: 1, free: 1]) do
-    GenServer.start_link(__MODULE__, opts, opts)
+
+  def start_link(limits \\ [paid: 1, free: 1], opts \\ []) do
+    GenServer.start_link(__MODULE__, limits, opts)
   end
 
   def increase_connection(pid, api_key) do

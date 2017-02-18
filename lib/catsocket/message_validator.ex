@@ -19,7 +19,6 @@ defmodule Catsocket.MessageValidator do
   def parse(payload) do
     case Poison.decode(payload) do
       {:ok, message} ->
-        MessageValidator.is_valid_message(message)
         if is_map(message) do
           {:ok, message}
         else

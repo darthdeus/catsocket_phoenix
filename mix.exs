@@ -7,6 +7,7 @@ defmodule Catsocket.Mixfile do
      elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
+     dialyzer: [plt_add_deps: :transitive],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
@@ -36,7 +37,7 @@ defmodule Catsocket.Mixfile do
         :httpotion,
 
         :runtime_tools,
-        :wobserver,
+        # :wobserver,
 
         # TODO: do we need these?
         :dbg,
@@ -75,7 +76,7 @@ defmodule Catsocket.Mixfile do
 
      # TODO: do we still need these?
      {:dbg, "~> 1.0.0"},
-     {:wobserver, "~> 0.1"},
+     # {:wobserver, "~> 0.1"},
 
      # {:folsom, github: "boundary/folsom"},
      {:credo, "~> 0.5", only: [:dev, :test]},

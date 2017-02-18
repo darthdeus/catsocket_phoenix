@@ -32,24 +32,8 @@ html
               li = link "Log in", to: session_path(@conn, :new)
               li = link "Register", to: registration_path(@conn, :new)
 
-      /header class="header"
-      /  nav role="navigation"
-      /    ul class="nav nav-pills pull-right"
-      /      li
-      /        a href="http://www.phoenixframework.org/docs" Get Started
-      /      li = link "About", to: page_path(@conn, :about)
-      /
-      /  span.logo
-
     .container
-      = for type <- [:info, :error] do
-        - flash = get_flash(@conn, type)
-        = if flash do
-          p class="alert alert-#{type}" role="alert" = flash
-
-        /  = get_flash(@conn, :info)
-        /p class="alert alert-danger" role="alert"
-        /  = get_flash(@conn, :error)
+      = Catsocket.PageView.flashes(@conn)
 
     = render @view_module, @view_template, assigns
 

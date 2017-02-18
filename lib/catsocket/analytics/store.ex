@@ -20,8 +20,9 @@ defmodule Catsocket.Analytics.Store do
     {:ok, Enum.reverse(messages), []}
   end
 
-  def handle_info(:cleanup, _state) do
+  def handle_info(:cleanup, state) do
     # TODO
+    {:noreply, state}
   end
 
 

@@ -9,6 +9,7 @@ defmodule Catsocket.WS.WebsocketHandler do
 
   def websocket_init(_type, req, _opts) do
     {:ok, pid} = ClientHandler.start_link(self())
+    {:ok, req, pid}
   end
 
   def websocket_info({:broadcast, message}, req, state) do
@@ -21,19 +22,19 @@ defmodule Catsocket.WS.WebsocketHandler do
     {:ok, req, state}
   end
 
-  def websocket_terminate(_reason, _req, handler) do
-    ClientHandler.connection_closed(handler)
+  def websocket_terminate(_reason, _req, handler_pid) do
+    ClientHandler.closed_connection(handler_pid)
   end
 
   def websocket_handle({:text, text}, req, handler_pid) do
     case ClientHandler.incoming_message(handler_pid, text) do
       {:ok, reply} ->
-        {:reply, reply, handler_pid}
+        {:reply, reply, req, handler_pid}
 
-      {:error, reason} ->
+      {:error, _reason} ->
+        # TODO: log error reason
         {:shutdown, req, handler_pid}
     end
-
   end
 
   def websocket_handle(data, req, state) do

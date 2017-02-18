@@ -38,13 +38,20 @@ defmodule Catsocket.ClientHandler do
     {:ok, initial_state}
   end
 
+  def handle_info({:broadcast, payload}, state) do
+    send(state.client_pid, {:broadcast, payload})
+    {:noreply, state}
+  end
+
   def handle_call(:closed_connection, _from, state) do
     Catsocket.Sockets.Users.remove(Catsocket.Sockets.Users, self())
     # TODO: this is wrong, should be removing by client guid
     Catsocket.Sockets.Rooms.remove_user(Catsocket.Sockets.Rooms, self())
+
+    {:reply, :ok, state}
   end
 
-  def handle_call({:incomming_message, payload}, _from, state) do
+  def handle_call({:incoming_message, payload}, _from, state) do
     case MessageValidator.parse(payload) do
       {:ok, message} ->
         process_message(message, state)
