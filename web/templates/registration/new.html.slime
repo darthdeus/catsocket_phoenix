@@ -1,5 +1,5 @@
 .backdrop.backdrop-large
-  .container
+  .container.account
     .row.padding-top
       .col-md-5.col-md-offset-1
         .white-box

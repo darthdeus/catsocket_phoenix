@@ -19,6 +19,10 @@ defmodule Catsocket.Project do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:name, :public_key, :private_key])
-    |> validate_required([:name])
+    |> validate_required(required_fields)
+  end
+
+  def required_fields do
+    [:name]
   end
 end

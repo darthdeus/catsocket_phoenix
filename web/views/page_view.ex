@@ -3,9 +3,10 @@ defmodule Catsocket.PageView do
 
   def flashes(conn) do
     [:info, :error]
-    |> Enum.map(&get_flash(conn, &1))
-    |> Enum.filter(&(&1 != nil))
-    |> Enum.map(&content_tag(:p, &1, class: "alert alert-#{&1}", role: "alert"))
+    |> Enum.map(& { &1, get_flash(conn, &1) } )
+    |> Enum.filter(fn {_type, text} -> (text != nil) end)
+    |> Enum.map(fn {type, text} -> { (if type == :error, do: :danger, else: type), text } end )
+    |> Enum.map(fn {type, text} -> content_tag(:p, text, class: "alert alert-#{type}", role: "alert") end)
   end
 
   def image_tag(img, opts) do

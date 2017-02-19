@@ -134,17 +134,16 @@ span.no-bold {
 }
 
 .project-box-new:hover {
-  border: 1px solid rgba(0,0,0,0.4);
   color: black;
 
   input {
-    border: 1px solid rgba(0,0,0,0.4);
+    border-style: solid;
+    border-width: 1px;
   }
 
   button {
     opacity: 1;
   }
-
 }
 
 .padded {
@@ -359,3 +358,4 @@ span.no-bold {
     color: #333;
     background-color: rgba(50,50,50, .01);
   }
+

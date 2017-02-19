@@ -12,9 +12,11 @@ defmodule Catsocket.ProjectController do
   def create(conn, %{"project" => project_params}) do
     case create_project(project_params) do
       {:error, changeset} ->
+        projects = Repo.all(Project)
+
         conn
         |> put_flash(:error, "Unable to create a new project.")
-        |> render("new.html", changeset: changeset)
+        |> render("index.html", projects: projects, changeset: changeset)
       _ ->
         conn
         |> put_flash(:info, "You have successfully created a new project.")

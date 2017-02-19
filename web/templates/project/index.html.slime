@@ -12,7 +12,7 @@
                 = project.name
 
     .col-md-4
-      .white-box
+      .white-box.project-box-new
         h3 Create a new project
 
         = form_for @changeset, project_path(@conn, :create), [as: :project], fn f ->

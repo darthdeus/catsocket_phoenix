@@ -1,10 +1,6 @@
 defmodule Catsocket.SimpleForm do
   import Phoenix.HTML.Tag
 
-  def simple_form_for(_changeset, _action, _f) do
-
-  end
-
   def checkbox_input(_f, name) do
     label = name_to_label(name)
 
@@ -20,26 +16,32 @@ defmodule Catsocket.SimpleForm do
     end
   end
 
-  def input(f, name, type) do
-    input(f, name_to_label(name), name, type)
+  def input(f, name, type, required \\ true) do
+    input(f, name_to_label(name), name, type, required)
   end
 
-  def input(f, label, name, type) do
-    text = case type do
-      :text -> Phoenix.HTML.Form.text_input(f, name, class: "form-control")
-      :password -> Phoenix.HTML.Form.password_input(f, name, class: "form-control")
-    end
-
+  def input(f, label, name, type, required) do
     error = case f.source do
       source when is_map(source) -> extract_error(source, name)
       _ -> ""
     end
 
-    content_tag :div, class: "form-group" do
+    text = case type do
+      :text -> Phoenix.HTML.Form.text_input(f, name, class: "form-control")
+      :password -> Phoenix.HTML.Form.password_input(f, name, class: "form-control")
+    end
+
+    required_mark = if required do
+      content_tag(:abbr, "*", title: "required")
+    end
+
+    content_tag :div, class: "form-group #{if error, do: 'has-error'}" do
       [
+        required_mark,
+        " ",
         content_tag(:label, label, for: name),
         text,
-        content_tag(:strong, error)
+        content_tag(:strong, error, class: 'error-text')
       ]
     end
   end
