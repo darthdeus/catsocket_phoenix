@@ -169,9 +169,7 @@ defmodule Catsocket.ClientHandler do
   defp build_ack(message) do
     %{
       id: message["id"],
-      data: %{},
-      action: "ack",
-      timestamp: message["timestamp"]
+      action: "ack"
     }
   end
 
