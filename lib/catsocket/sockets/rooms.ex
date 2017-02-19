@@ -52,16 +52,23 @@ defmodule Catsocket.Sockets.Rooms do
     #   }
     # }
 
-    message = %{
-      room: room,
-      message: text
-    }
+    # TODO: use a broadcast constant for 3
+    guid = Ecto.UUID.generate()
 
-    json = Poison.encode!(message)
+    rest = guid <> room <> << text :: binary >>
+    # payload = << 3 :: size(1), guid :: size(288), room :: size(128), text :: binary >>
+    payload = << 3 :: size(8), rest :: binary >>
+
+    # message = %{
+    #   room: room,
+    #   message: text
+    # }
+    #
+    # json = Poison.encode!(message)
 
     for name <- names do
       # IO.puts "broadcast to #{name} json #{json}"
-      Users.broadcast(Users, name, json)
+      Users.broadcast(Users, name, payload)
     end
   end
 

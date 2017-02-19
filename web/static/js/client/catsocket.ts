@@ -134,19 +134,24 @@ class CatSocket {
                 }
               }
 
-              delete this.sent_messages[parsed.id];
             } else {
               console.error("Received ACK for message which wasn't sent", parsed.id, parsed);
             }
 
             break;
           case "broadcast":
+            if (parsed.room && parsed.payload) {
+              const handler = this.handlers[parsed.room];
+              handler.call(null, parsed.payload);
+            }
 
             break;
           default:
             console.error(`Invalid action ${parsed.action} received`, parsed);
             break;
         }
+
+        delete this.sent_messages[parsed.id];
       }
 
       // // TODO - rozlisovat kontrolnim kodem

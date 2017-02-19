@@ -46,7 +46,7 @@ defmodule Catsocket.ClientHandler do
   end
 
   def handle_info({:broadcast, payload}, state) do
-    send(state.client_pid, {:broadcast, :text, payload})
+    send(state.client_pid, {:broadcast, :binary, payload})
     {:noreply, state}
   end
 

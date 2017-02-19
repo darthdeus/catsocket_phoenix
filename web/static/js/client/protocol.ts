@@ -42,11 +42,25 @@ class Protocol {
         throw "Only ACK and BROADCAST can be parsed by the client";
 
       case ACK:
-        return { action: "ack", id: msgId };
+        return {
+          id:     msgId,
+          action: "ack",
+        };
 
       case BROADCAST:
         const room = this.readASCIIString(view, CODE_LEN + GUID_LEN, ROOM_MAX_LEN);
-        return { action: "broadcast", id: msgId, room: room, payload: {} };
+
+
+        const prefix = CODE_LEN + GUID_LEN + ROOM_MAX_LEN;
+        const data = this.readASCIIString(view, prefix, buffer.byteLength - prefix);
+        const json = JSON.parse(data);
+
+        return {
+          id:      msgId,
+          action:  "broadcast",
+          room:    room,
+          payload: json
+        };
     }
   }
 
