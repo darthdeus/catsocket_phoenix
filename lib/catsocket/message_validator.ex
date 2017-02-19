@@ -1,7 +1,8 @@
 defmodule Catsocket.MessageValidator do
   def validate_message(message) do
-    if ! Map.has_key?(message, "api_key"),   do: throw {:invalid, "api_key"}
-    if ! Map.has_key?(message, "user"),      do: throw {:invalid, "user"}
+    # TODO: conditional validation
+    # if ! Map.has_key?(message, "api_key"),   do: throw {:invalid, "api_key"}
+    # if ! Map.has_key?(message, "user"),      do: throw {:invalid, "user"}
     if ! Map.has_key?(message, "id"),        do: throw {:invalid, "id"}
     if ! Map.has_key?(message, "timestamp"), do: throw {:invalid, "timestamp"}
     if ! Map.has_key?(message, "action"),    do: throw {:invalid, "action"}

@@ -67,7 +67,6 @@ defmodule Catsocket.ClientHandler do
   def process_message(message, state) do
     try do
       MessageValidator.validate_message(message)
-      MessageValidator.validate_api_key(message["api_key"])
 
       if MessageCache.get(MessageCache, message["id"]) do
         # nic se nedeje, zprava byla zpracovana
@@ -116,6 +115,8 @@ defmodule Catsocket.ClientHandler do
   ## Client action handlers
 
   defp handle_identify(message, state) do
+    MessageValidator.validate_api_key(message["api_key"])
+
     Users.associate(Users, message["user"], self())
 
     new_state = %{state | api_key:    message["api_key"],

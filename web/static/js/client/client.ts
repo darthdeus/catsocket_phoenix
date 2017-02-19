@@ -72,14 +72,17 @@ class MessageSender {
   }
 
   send(action: ClientAction, data: any) {
-    var params = {
+    let params = {
       "id": guid(),
-      "data": data,
       "action": action,
-      "user": this.cat.user_id,
-      "api_key": this.cat.api_key,
-      "timestamp": new Date().getTime()
+      "timestamp": new Date().getTime(),
+      "data": data,
     };
+
+    if (action == "identify") {
+      params["user"] = this.cat.user_id;
+      params["api_key"] = this.cat.api_key;
+    }
 
     this._doSend(params);
   };
@@ -322,10 +325,10 @@ class CatSocket {
       switch (event.action) {
         case "message":
           new MessageProcessor(this, this.sender).handleMessage(event);
-          break;
+        break;
         case "ack":
           new MessageProcessor(this, this.sender).handleAck(event);
-          break;
+        break;
         default:
           this._unrecognizedMessage(event);
       }
@@ -356,30 +359,30 @@ const defaultOptions: CatsocketOptions = {
   status_changed: (status) => {},
 }
 
-const catsocket = {
-  init(api_key: string, options: CatsocketOptions = defaultOptions) {
-    var host = options["host"];
+  const catsocket = {
+    init(api_key: string, options: CatsocketOptions = defaultOptions) {
+      var host = options["host"];
 
-    // TODO - asssert that API key exists
-    const user_id = options.user_id || guid();
+      // TODO - asssert that API key exists
+      const user_id = options.user_id || guid();
 
-    console.log("choosing env", process.env.NODE_ENV);
-    if (process.env.NODE_ENV !== "production" && !options["production"]) {
+      console.log("choosing env", process.env.NODE_ENV);
+      if (process.env.NODE_ENV !== "production" && !options["production"]) {
         host = host || "ws://localhost:9000";
-    } else {
+      } else {
         host = host || "ws://catsocket.com";
+      }
+
+      const status_changed: StatusChangedHandler = options.status_changed || function() {};
+      const cat = new CatSocket(api_key, user_id, host, status_changed);
+      cat.connect();
+
+      cat.log_debug("Trying to connect...", null);
+
+      return cat;
     }
-
-    const status_changed: StatusChangedHandler = options.status_changed || function() {};
-    const cat = new CatSocket(api_key, user_id, host, status_changed);
-    cat.connect();
-
-    cat.log_debug("Trying to connect...", null);
-
-    return cat;
-  }
-};
+  };
 
 
 
-export default catsocket;
+  export default catsocket;
