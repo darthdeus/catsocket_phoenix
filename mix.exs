@@ -70,6 +70,7 @@ defmodule Catsocket.Mixfile do
      {:ex_machina, "~> 1.0"},
      {:httpotion, "~> 3.0.2"},
 
+     {:exprof, "~> 0.2.0"},
      {:timex, "~> 3.0"},
 
      {:dialyxir, "~> 0.4", only: [:dev, :test], runtime: false},

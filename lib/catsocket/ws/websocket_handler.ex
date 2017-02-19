@@ -12,8 +12,12 @@ defmodule Catsocket.WS.WebsocketHandler do
     {:ok, req, pid}
   end
 
-  def websocket_info({:broadcast, message}, req, state) do
+  def websocket_info({:broadcast, :text, message}, req, state) do
     {:reply, {:text, message}, req, state}
+  end
+
+  def websocket_info({:broadcast, :binary, message}, req, state) do
+    {:reply, {:binary, message}, req, state}
   end
 
   def websocket_info(info, req, state) do

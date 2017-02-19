@@ -42,7 +42,7 @@ defmodule Catsocket.ClientHandler do
   end
 
   def handle_info({:broadcast, payload}, state) do
-    send(state.client_pid, {:broadcast, payload})
+    send(state.client_pid, {:broadcast, :text, payload})
     {:noreply, state}
   end
 
@@ -68,32 +68,23 @@ defmodule Catsocket.ClientHandler do
     try do
       MessageValidator.validate_message(message)
 
-      if MessageCache.get(MessageCache, message["id"]) do
-        # nic se nedeje, zprava byla zpracovana
-        IO.puts "Message #{inspect message} already processed"
+      reply = case message["action"] do
+        "identify"  ->
+          handle_identify(message, state)
+        "join"      ->
+          MessageValidator.validate_identify(state)
+          handle_join(message, state)
+        "leave"     ->
+          MessageValidator.validate_identify(state)
+          handle_leave(message, state)
+        "broadcast" ->
+          MessageValidator.validate_identify(state)
+          handle_broadcast(message, state)
 
-        {:reply, ack(message), state}
-      else
-
-        reply = case message["action"] do
-          "identify"  ->
-            handle_identify(message, state)
-          "join"      ->
-            MessageValidator.validate_identify(state)
-            handle_join(message, state)
-          "leave"     ->
-            MessageValidator.validate_identify(state)
-            handle_leave(message, state)
-          "broadcast" ->
-            MessageValidator.validate_identify(state)
-            handle_broadcast(message, state)
-
-          other -> IO.puts "invalid action #{other}"
-        end
-
-        # Catsocket.MessageCache.put(Catsocket.MessageCache, message["id"])
-        reply
+        other -> IO.puts "invalid action #{other}"
       end
+
+      reply
     catch
       {:invalid, attr} ->
         error = %{error: "Missing attribute '#{attr}'"}
@@ -163,7 +154,8 @@ defmodule Catsocket.ClientHandler do
 
   def ack(message) do
     json = Poison.encode!(build_ack(message))
-    {:text, json}
+    # {:text, json}
+    {:binary, message["id"]}
   end
 
   defp build_ack(message) do

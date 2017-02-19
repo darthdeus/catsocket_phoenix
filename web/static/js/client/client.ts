@@ -19,13 +19,9 @@ interface ClientMessage {
   action: ClientAction;
 };
 
-type ReceivedAction = "message" | "ack";
 interface ReceivedMessage {
-  data: any;
-  api_key: string;
-  user: string;
-  id: string;
-  action: ReceivedAction;
+  room: string;
+  message: any;
 }
 
 type Status = "connecting" | "connected" | "identified";
@@ -193,14 +189,14 @@ class MessageProcessor {
   }
 
   handleMessage(event: ReceivedMessage) {
-    if (event["data"]["room"]) {
-      var handler = this.cat.handlers[event["data"]["room"]];
+    if (event.room) {
+      var handler = this.cat.handlers[event.room];
 
       if (typeof handler === "function") {
-        if (event["data"]["message"]) {
-          handler.call(null, event["data"]["message"]);
+        if (event.message) {
+          handler.call(null, event.message);
         } else {
-          console.error("Missing message in `event.data.message`", event);
+          console.error("Missing message in `event.message`", event);
         }
       } else {
         this.cat.log("Received message for which there is no handler", event);
@@ -210,8 +206,8 @@ class MessageProcessor {
     }
   };
 
-  handleAck(event: ReceivedMessage) {
-    var sent_message = this.cat.sent_messages[event["id"]];
+  handleAck(messageId) {
+    var sent_message = this.cat.sent_messages[messageId];
 
     if (sent_message) {
       if (sent_message["action"] === "identify") {
@@ -222,9 +218,9 @@ class MessageProcessor {
       }
 
       this.cat.log_debug("<- ACK:", sent_message["id"], sent_message);
-      delete this.cat.sent_messages[event["id"]];
+      delete this.cat.sent_messages[messageId];
     } else {
-      console.error("Received ACK for message which wasn't sent", event["id"], event);
+      console.error("Received ACK for message which wasn't sent", messageId, event);
     }
   };
 
@@ -290,6 +286,7 @@ class CatSocket {
     this.status_changed("connecting");
     var url = this.host + "/b/ws";
     this.socket = new WebSocket(url);
+    this.socket.binaryType = "arraybuffer";
     this._setHandlers(this.socket);
   };
 
@@ -313,23 +310,34 @@ class CatSocket {
       this.status_changed("closed");
     }.bind(this);
 
+
+    const messageProcessor = new MessageProcessor(this, this.sender);
+
     socket.onmessage = function(message: any) {
+      if (typeof message.data === "string") {
+        const event: ReceivedMessage = JSON.parse(message.data);
+
+        if (event.room && event.message) {
+          messageProcessor.handleMessage(event);
+        } else {
+          this._unrecognizedMessage(event);
+        }
+
+      } else {
+        let guid = "";
+        const view = new DataView(message.data);
+
+        for (let i = 0; i < message.data.byteLength; i++) {
+          guid += String.fromCharCode(view.getUint8(i));
+        }
+
+        messageProcessor.handleAck(guid);
+
+      }
       // if (this["debug"]) console.group("onmessage");
 
       // TODO - check if there is something else on the message that could be used/inspected?
 
-      const event: ReceivedMessage = JSON.parse(message["data"]);
-
-      switch (event.action) {
-        case "message":
-          new MessageProcessor(this, this.sender).handleMessage(event);
-        break;
-        case "ack":
-          new MessageProcessor(this, this.sender).handleAck(event);
-        break;
-        default:
-          this._unrecognizedMessage(event);
-      }
 
       // if (this["debug"]) console.groupEnd();
     }.bind(this);

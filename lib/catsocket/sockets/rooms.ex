@@ -42,14 +42,19 @@ defmodule Catsocket.Sockets.Rooms do
   def broadcast(pid, api_key, room, text) do
     names = members(pid, api_key, room)
 
+    # message = %{
+    #   # action: "message",
+    #   # id: Ecto.UUID.generate(),
+    #   # timestamp: Timex.Duration.epoch(:milliseconds),
+    #   data: %{
+    #     message: text,
+    #     room: room,
+    #   }
+    # }
+
     message = %{
-      action: "message",
-      id: Ecto.UUID.generate(),
-      timestamp: Timex.Duration.epoch(:milliseconds),
-      data: %{
-        message: text,
-        room: room,
-      }
+      room: room,
+      message: text
     }
 
     json = Poison.encode!(message)
