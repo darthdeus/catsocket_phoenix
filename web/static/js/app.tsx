@@ -58,10 +58,10 @@ class ChatForm extends React.Component<any, any> {
 
     if (msg) {
       node.value = "";
-      this.props.cat.sender.broadcast(ROOM, JSON.stringify({
+      this.props.cat.broadcast(ROOM, {
         text: msg,
         author: this.props.username
-      }));
+      });
     }
   }
 
@@ -83,7 +83,7 @@ class ChatBox extends React.Component<any, any> {
 
   componentDidMount() {
     const self = this;
-    this.props.cat.sender.join(ROOM, function(message) {
+    this.props.cat.join(ROOM, function(message) {
       var data = JSON.parse(message);
 
       self.setState(function (old) {
@@ -202,7 +202,7 @@ const mountPaint = function mountPaint(canvas) {
     production: PRODUCTION_BACKEND
   });
 
-  cat.sender.join(ROOM, function(msg) {
+  cat.join(ROOM, function(msg) {
     paintAt(msg.x, msg.y);
   });
 
@@ -218,7 +218,7 @@ const mountPaint = function mountPaint(canvas) {
 
     console.log(x, y);
 
-    cat.sender.broadcast(ROOM, { x, y });
+    cat.broadcast(ROOM, { x, y });
     paintAt(x, y);
   }, false);
 

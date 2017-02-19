@@ -31,9 +31,9 @@ defmodule Catsocket.WS.WebsocketHandler do
   end
 
   def websocket_handle({:binary, payload}, req, handler_pid) do
-    case ClientHandler.binary_message(handler_pid, {:binary, payload}) do
-      {:ok, reply} ->
-        {:reply, reply, req, handler_pid}
+    case ClientHandler.binary_message(handler_pid, payload) do
+      {:ok, msg_id} ->
+        {:reply, msg_id, req, handler_pid}
 
       {:error, _reason} ->
         # TODO: log error reason

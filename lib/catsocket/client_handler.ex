@@ -58,123 +58,69 @@ defmodule Catsocket.ClientHandler do
     {:reply, :ok, state}
   end
 
-  def handle_call({:incoming_message, payload}, _from, state) do
-    case MessageValidator.parse(payload) do
-      {:ok, message} ->
-        process_message(message, state)
+  @identify  0
+  @join      1
+  @leave     2
+  @broadcast 3
 
-      {:error, reason} ->
-        {:reply, {:error, reason}, state}
-    end
-  end
+  @room_len  128
+  @guid_len  288
 
   def handle_call({:binary_message, payload}, _from, state) do
-    <<room :: size(128), data :: binary>> = payload
+    << code :: size(8), msg_id :: size(@guid_len), data :: binary >> = payload
 
-    Rooms.broadcast(Rooms, state.api_key, room, data)
+    case code do
+      @identify ->
+        << api_key :: size(@guid_len), user :: size(@guid_len) >> = data
+        handle_identify(msg_id, api_key, user, state)
 
-    {:reply, {:ok, "fdsafasd"}, state}
-  end
+      @join ->
+        << room :: size(@room_len) >> = data
+        handle_join(msg_id, room, state)
 
-  def process_message(message, state) do
-    try do
-      MessageValidator.validate_message(message)
+      @leave ->
+        << room :: size(@room_len) >> = data
+        handle_leave(msg_id, room, state)
 
-      reply = case message["action"] do
-        "identify"  ->
-          handle_identify(message, state)
-        "join"      ->
-          MessageValidator.validate_identify(state)
-          handle_join(message, state)
-        "leave"     ->
-          MessageValidator.validate_identify(state)
-          handle_leave(message, state)
-        "broadcast" ->
-          MessageValidator.validate_identify(state)
-          handle_broadcast(message, state)
-
-        other -> IO.puts "invalid action #{other}"
-      end
-
-      reply
-    catch
-      {:invalid, attr} ->
-        error = %{error: "Missing attribute '#{attr}'"}
-        json = Poison.encode!(error)
-        {:reply, {:error, json}, state}
-
-      :unidentified ->
-        error = %{error: "Identify required"}
-        json = Poison.encode!(error)
-        {:reply, {:error, json}, state}
-
-      :wrong_api_key ->
-        error = %{error: "Api key required"}
-        json = Poison.encode!(error)
-        {:reply, {:error, json}, state}
+      @broadcast ->
+        << room :: size(@room_len), rest :: binary >> = data
+        handle_broadcast(msg_id, room, rest, state)
     end
   end
 
   ## Client action handlers
 
-  defp handle_identify(message, state) do
-    MessageValidator.validate_api_key(message["api_key"])
+  defp handle_identify(msg_id, api_key, user, state) do
+    Users.associate(Users, user, self())
 
-    Users.associate(Users, message["user"], self())
-
-    new_state = %{state | api_key:    message["api_key"],
-                          guid:       message["user"],
+    new_state = %{state | api_key:    api_key,
+                          guid:       user,
                           identified: true}
 
-    {:reply, {:ok, ack(message)}, new_state}
+    {:reply, {:ok, ack(msg_id)}, new_state}
   end
 
-  defp handle_join(message, state) do
-    if ! Map.has_key?(message["data"], "room"), do: throw {:invalid, "room"}
-
-    # IO.puts "joined"
-    room = message["data"]["room"]
-
+  defp handle_join(msg_id, room, state) do
     Rooms.join(Rooms, state.api_key, room, state.guid)
 
-    {:reply, {:ok, ack(message)}, state}
+    {:reply, {:ok, ack(msg_id)}, state}
   end
 
-  defp handle_leave(message, state) do
-    if ! Map.has_key?(message["data"], "room"), do: throw {:invalid, "room"}
-
-    room = message["data"]["room"]
-
+  defp handle_leave(msg_id, room, state) do
     Rooms.leave(Rooms, state.api_key, room, state.guid)
 
-    {:reply, {:ok, ack(message)}, state}
+    {:reply, {:ok, ack(msg_id)}, state}
   end
 
-  defp handle_broadcast(message, state) do
-    # TODO - validate message length
-    if ! Map.has_key?(message["data"], "room"), do: throw {:invalid, "room"}
-    if ! Map.has_key?(message["data"], "message"), do: throw {:invalid, "message"}
+  defp handle_broadcast(msg_id, room, payload, state) do
+    Rooms.broadcast(Rooms, state.api_key, room, payload)
 
-    room = message["data"]["room"]
-    text = message["data"]["message"]
-    Rooms.broadcast(Rooms, state.api_key, room, text)
-
-    {:reply, {:ok, ack(message)}, state}
+    {:reply, {:ok, ack(msg_id)}, state}
   end
 
   ## Response helpers
 
-  def ack(message) do
-    json = Poison.encode!(build_ack(message))
-    # {:text, json}
-    {:binary, message["id"]}
+  def ack(msg_id) do
+    {:binary, << msg_id :: size(@guid_len) >>}
   end
-
-  defp build_ack(message) do
-    %{
-      id: message["id"],
-      action: "ack"
-    }
-  end
-
 end
