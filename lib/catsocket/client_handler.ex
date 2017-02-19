@@ -64,27 +64,27 @@ defmodule Catsocket.ClientHandler do
   @broadcast 3
   @ack       4
 
-  @room_len  128
-  @guid_len  288
+  @room_len  16
+  @guid_len  36
 
   def handle_call({:binary_message, payload}, _from, state) do
-    << code :: size(8), msg_id :: size(@guid_len), data :: binary >> = payload
+    << code :: size(8), msg_id :: bytes-size(@guid_len), data :: binary >> = payload
 
     case code do
       @identify ->
-        << api_key :: size(@guid_len), user :: size(@guid_len) >> = data
+        << api_key :: bytes-size(@guid_len), user :: bytes-size(@guid_len) >> = data
         handle_identify(msg_id, api_key, user, state)
 
       @join ->
-        << room :: size(@room_len) >> = data
+        << room :: bytes-size(@room_len) >> = data
         handle_join(msg_id, room, state)
 
       @leave ->
-        << room :: size(@room_len) >> = data
+        << room :: bytes-size(@room_len) >> = data
         handle_leave(msg_id, room, state)
 
       @broadcast ->
-        << room :: size(@room_len), rest :: binary >> = data
+        << room :: bytes-size(@room_len), rest :: binary >> = data
         handle_broadcast(msg_id, room, rest, state)
     end
   end
@@ -122,6 +122,6 @@ defmodule Catsocket.ClientHandler do
   ## Response helpers
 
   def ack(msg_id) do
-    {:binary, << @ack :: size(8), msg_id :: size(@guid_len) >>}
+    {:binary, << @ack :: size(8) >> <> msg_id}
   end
 end

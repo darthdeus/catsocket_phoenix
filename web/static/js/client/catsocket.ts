@@ -60,7 +60,7 @@ class CatSocket {
 
   join(room: string, handler: any, last_timestamp?: number) {
     if (handler) {
-      this.handlers[room] = handler;
+      this.handlers[this.protocol.padRoom(room)] = handler;
     }
 
     const msgId = guid();

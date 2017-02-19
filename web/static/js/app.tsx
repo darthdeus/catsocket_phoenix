@@ -83,9 +83,7 @@ class ChatBox extends React.Component<any, any> {
 
   componentDidMount() {
     const self = this;
-    this.props.cat.join(ROOM, function(message) {
-      var data = JSON.parse(message);
-
+    this.props.cat.join(ROOM, function(data) {
       self.setState(function (old) {
         var arr = old.messages;
         if (arr.length > 4) {
