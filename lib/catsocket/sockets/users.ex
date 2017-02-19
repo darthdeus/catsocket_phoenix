@@ -5,18 +5,30 @@ defmodule Catsocket.Sockets.Users do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
 
+  @doc """
+    Associates a given client PID with a given GUID
+  """
   def associate(pid, guid, client) do
     GenServer.call(pid, {:associate, guid, client})
   end
 
+  @doc """
+    Retrieves a previously stored PID for a given GUID
+  """
   def fetch(pid, guid) do
     GenServer.call(pid, {:fetch, guid})
   end
 
+  @doc """
+    Removes a GUID association for a given PID
+  """
   def remove(pid, client_pid) do
     GenServer.call(pid, {:remove, client_pid})
   end
 
+  @doc """
+    Broadcasts a message to a client with a given GUID
+  """
   def broadcast(pid, guid, message) do
     user = fetch(pid, guid)
 

@@ -9,24 +9,36 @@ defmodule Catsocket.Sockets.Rooms do
 
   ## Public API
 
+  @doc """
+    Adds a user to a given room using a particular API key.
+  """
   def join(pid, api_key, room, user) do
     if room == nil, do: throw {:invalid, room}
 
     GenServer.call(pid, {:join, room_name(api_key, room), user})
   end
 
+  @doc """
+    Removes a user from a given room
+  """
   def leave(pid, api_key, room, user) do
     if room == nil, do: throw {:invalid, room}
 
     GenServer.call(pid, {:leave, room_name(api_key, room), user})
   end
 
+  @doc """
+    Retrieves all members of a given room
+  """
   def members(pid, api_key, room) do
     if room == nil, do: throw {:invalid, room}
 
     GenServer.call(pid, {:members, room_name(api_key, room)})
   end
 
+  @doc """
+    Broadcasts a message to all members of a given room
+  """
   def broadcast(pid, api_key, room, text) do
     names = members(pid, api_key, room)
 
@@ -48,6 +60,9 @@ defmodule Catsocket.Sockets.Rooms do
     end
   end
 
+  @doc """
+    Removes a user from all rooms (TODO: API key isn't needed?)
+  """
   def remove_user(pid, user) do
     GenServer.call(pid, {:remove_user, user})
   end

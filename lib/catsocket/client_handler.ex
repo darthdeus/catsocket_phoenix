@@ -2,6 +2,9 @@ defmodule Catsocket.ClientHandler do
   use GenServer
 
   alias Catsocket.MessageValidator
+  alias Catsocket.Sockets.Users
+  alias Catsocket.Sockets.Rooms
+  alias Catsocket.Sockets.MessageCache
 
   @doc """
     Starts a new client handler for a given client PID
@@ -44,9 +47,9 @@ defmodule Catsocket.ClientHandler do
   end
 
   def handle_call(:closed_connection, _from, state) do
-    Catsocket.Sockets.Users.remove(Catsocket.Sockets.Users, self())
+    Users.remove(Users, self())
     # TODO: this is wrong, should be removing by client guid
-    Catsocket.Sockets.Rooms.remove_user(Catsocket.Sockets.Rooms, self())
+    Rooms.remove_user(Rooms, self())
 
     {:reply, :ok, state}
   end
@@ -66,7 +69,7 @@ defmodule Catsocket.ClientHandler do
       MessageValidator.validate_message(message)
       MessageValidator.validate_api_key(message["api_key"])
 
-      if Catsocket.Sockets.MessageCache.get(Catsocket.Sockets.MessageCache, message["id"]) do
+      if MessageCache.get(MessageCache, message["id"]) do
         # nic se nedeje, zprava byla zpracovana
         IO.puts "Message #{inspect message} already processed"
 
@@ -113,9 +116,11 @@ defmodule Catsocket.ClientHandler do
   ## Client action handlers
 
   defp handle_identify(message, state) do
-    Catsocket.Sockets.Users.associate(Catsocket.Sockets.Users, message["user"], self())
+    Users.associate(Users, message["user"], self())
 
-    new_state = %{state | api_key: message["api_key"], guid: message["user"], identified: true}
+    new_state = %{state | api_key:    message["api_key"],
+                          guid:       message["user"],
+                          identified: true}
 
     {:reply, {:ok, ack(message)}, new_state}
   end
@@ -126,7 +131,7 @@ defmodule Catsocket.ClientHandler do
     # IO.puts "joined"
     room = message["data"]["room"]
 
-    Catsocket.Sockets.Rooms.join(Catsocket.Sockets.Rooms, message["api_key"], room, state[:guid])
+    Rooms.join(Rooms, state.api_key, room, state.guid)
 
     {:reply, {:ok, ack(message)}, state}
   end
@@ -136,7 +141,7 @@ defmodule Catsocket.ClientHandler do
 
     room = message["data"]["room"]
 
-    Catsocket.Sockets.Rooms.leave(Catsocket.Sockets.Rooms, message["api_key"], room, state[:guid])
+    Rooms.leave(Rooms, state.api_key, room, state.guid)
 
     {:reply, {:ok, ack(message)}, state}
   end
@@ -148,7 +153,7 @@ defmodule Catsocket.ClientHandler do
 
     room = message["data"]["room"]
     text = message["data"]["message"]
-    Catsocket.Sockets.Rooms.broadcast(Catsocket.Sockets.Rooms, message["api_key"], room, text)
+    Rooms.broadcast(Rooms, state.api_key, room, text)
 
     {:reply, {:ok, ack(message)}, state}
   end
