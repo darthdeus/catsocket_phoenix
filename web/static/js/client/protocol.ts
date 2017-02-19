@@ -4,6 +4,7 @@ const IDENTIFY  = 0;
 const JOIN      = 1;
 const LEAVE     = 2;
 const BROADCAST = 3;
+const ACK       = 4;
 
 const CODE_LEN = 1;
 
@@ -13,6 +14,39 @@ class Protocol {
   writeASCIIString(view: DataView, offset: number, str: string) {
     for (let i = 0; i < str.length; ++i) {
       view.setUint8(offset + i, str.charCodeAt(i));
+    }
+  }
+
+  readASCIIString(view: DataView, offset: number, length: number): string {
+    let str = "";
+
+    // TODO - bounds check
+
+    for (let i = 0; i < length; ++i) {
+      str += String.fromCharCode(view.getUint8(offset + i));
+    }
+
+    return str;
+  }
+
+  parse(buffer: ArrayBuffer): any {
+    const view = new DataView(buffer);
+
+    const code = view.getUint8(0);
+    const msgId = this.readASCIIString(view, CODE_LEN, GUID_LEN);
+
+    switch (code) {
+      case IDENTIFY:
+      case JOIN:
+      case LEAVE:
+        throw "Only ACK and BROADCAST can be parsed by the client";
+
+      case ACK:
+        return { action: "ack", id: msgId };
+
+      case BROADCAST:
+        const room = this.readASCIIString(view, CODE_LEN + GUID_LEN, ROOM_MAX_LEN);
+        return { action: "broadcast", id: msgId, room: room, payload: {} };
     }
   }
 

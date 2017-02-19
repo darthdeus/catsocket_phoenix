@@ -7,8 +7,10 @@ class CatSocket {
   public user_id: any;
   public api_key: any;
   public handlers: any;
-  public sent_messages: any;
+  public sent_messages: {};
   public protocol: Protocol;
+  public queue: any[];
+  public status_changed: any;
 
   public socketState: SocketState;
 
@@ -19,50 +21,41 @@ class CatSocket {
 
     this.socket = null;
 
-    this.socketState = "init";
+    this.setSocketState("init");
     this.user_id = user_id;
     this.api_key = api_key;
     // room<->handler mapping for received messages
     this.handlers = {};
-    this.sent_messages = [];
+    this.sent_messages = {};
+    this.queue = [];
 
     this.protocol = new Protocol();
   }
 
-  // send(action: ClientAction, data: any) {
-  //   let params = {
-  //     "id": guid(),
-  //     "action": action,
-  //     "data": data,
-  //   };
-  //
-  //   if (action == "identify") {
-  //     params["user"] = this.user_id;
-  //     params["api_key"] = this.api_key;
-  //   }
-  //
-  //   this._doSend(params);
-  // };
+  storeAndSend(action: ClientAction, msgId: string, buffer: ArrayBuffer) {
+    this.sent_messages[msgId] = { action: action };
 
-  storeAndSend(buffer: ArrayBuffer) {
-    this.socket.send(buffer);
-    // if (this.socketState == "identified" || params.action == "identify") {
-    //   this.socket.send(JSON.stringify(params));
-    // } else {
-    //   console.error("Sending a message before the client is connected");
-    // }
+    const isIdentified   = this.socketState == "identified";
+    const shouldIdentify = this.socketState == "connected" && action == "identify";
+
+    if (isIdentified || shouldIdentify) {
+      this.socket.send(buffer);
+    } else {
+      this.queue.push(buffer);
+    }
   };
+
+  setSocketState(newState) {
+    this.socketState = newState;
+
+    if (typeof this.status_changed === "function") {
+      this.status_changed(this.socketState);
+    }
+  }
 
   close() {
     this.socket.close();
-    this.socketState = "disconnected";
-  };
-
-  leave(room: string) {
-    delete this.handlers[room];
-
-    const payload = this.protocol.leave(guid(), room);
-    this.storeAndSend(payload);
+    this.setSocketState("disconnected");
   };
 
   join(room: string, handler: any, last_timestamp?: number) {
@@ -70,18 +63,29 @@ class CatSocket {
       this.handlers[room] = handler;
     }
 
-    const payload = this.protocol.join(guid(), room);
-    this.storeAndSend(payload);
+    const msgId = guid();
+    const payload = this.protocol.join(msgId, room);
+    this.storeAndSend("join", msgId, payload);
+  };
+
+  leave(room: string) {
+    delete this.handlers[room];
+
+    const msgId = guid();
+    const payload = this.protocol.leave(msgId, room);
+    this.storeAndSend("leave", msgId, payload);
   };
 
   identify() {
-    const payload = this.protocol.identify(guid(), this.api_key, this.user_id);
-    this.storeAndSend(payload);
+    const msgId = guid();
+    const payload = this.protocol.identify(msgId, this.api_key, this.user_id);
+    this.storeAndSend("identify", msgId, payload);
   }
 
   broadcast(room: string, data: any) {
-    const payload = this.protocol.broadcast(guid(), room, data);
-    this.storeAndSend(payload);
+    const msgId = guid();
+    const payload = this.protocol.broadcast(msgId, room, data);
+    this.storeAndSend("broadcast", msgId, payload);
   }
 
   connect(host) {
@@ -99,49 +103,68 @@ class CatSocket {
   _setHandlers(socket: WebSocket) {
 
     socket.onopen = () => {
-      this.socketState = "connected";
+      this.setSocketState("connected");
       this.identify();
     };
 
     socket.onclose = () => {
       console.error("Socket was disconnected");
 
-      this.socketState = "disconnected";
+      this.setSocketState("disconnected");
     };
 
     socket.onmessage = (message: any) => {
-      // TODO - rozlisovat kontrolnim kodem
-      if (typeof message.data === "string") {
-        const event: ReceivedMessage = JSON.parse(message.data);
-
-        if (event.room && event.message) {
-          const handler = this.handlers[event.room];
-          handler.call(null, event.message);
-
-        } else {
-          console.error("Unrecognized message", event);
-        }
-
+      if (typeof message.data !== "object") {
+        console.error(`Invalid message type ${typeof message.data}, all communication now happens over binary`, message.data);
       } else {
-        let guid = "";
-        const view = new DataView(message.data);
+        const parsed = this.protocol.parse(message.data);
 
-        for (let i = 0; i < message.data.byteLength; i++) {
-          guid += String.fromCharCode(view.getUint8(i));
-        }
+        switch (parsed.action) {
+          case "ack":
+            const sent_message = this.sent_messages[parsed.id];
+            if (sent_message) {
+              if (sent_message.action === "identify") {
+                this.setSocketState("identified");
 
-        const sent_message = this.sent_messages[guid];
+                const q = this.queue;
+                this.queue = [];
 
-        if (sent_message) {
-          if (sent_message["action"] === "identify") {
-            this.socketState = "identified";
-          }
+                for (let i = 0; i < q.length; ++i) {
+                  this.socket.send(q[i]);
+                }
+              }
 
-          delete this.sent_messages[guid];
-        } else {
-          console.error("Received ACK for message which wasn't sent", guid, event);
+              delete this.sent_messages[parsed.id];
+            } else {
+              console.error("Received ACK for message which wasn't sent", parsed.id, parsed);
+            }
+
+            break;
+          case "broadcast":
+
+            break;
+          default:
+            console.error(`Invalid action ${parsed.action} received`, parsed);
+            break;
         }
       }
+
+      // // TODO - rozlisovat kontrolnim kodem
+      // if (typeof message.data === "string") {
+      //   const event: ReceivedMessage = JSON.parse(message.data);
+      //
+      //   if (event.room && event.message) {
+      //     const handler = this.handlers[event.room];
+      //     handler.call(null, event.message);
+      //
+      //   } else {
+      //     console.error("Unrecognized message", event);
+      //   }
+      //
+      // } else {
+      //   let guid = "";
+      //   const view = new DataView(message.data);
+      // }
     };
   };
 }

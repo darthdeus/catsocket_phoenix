@@ -62,6 +62,7 @@ defmodule Catsocket.ClientHandler do
   @join      1
   @leave     2
   @broadcast 3
+  @ack       4
 
   @room_len  128
   @guid_len  288
@@ -121,6 +122,6 @@ defmodule Catsocket.ClientHandler do
   ## Response helpers
 
   def ack(msg_id) do
-    {:binary, << msg_id :: size(@guid_len) >>}
+    {:binary, << @ack :: size(8), msg_id :: size(@guid_len) >>}
   end
 end
