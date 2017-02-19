@@ -26,7 +26,6 @@ interface ReceivedMessage {
   user: string;
   id: string;
   action: ReceivedAction;
-  timestamp: number
 }
 
 type Status = "connecting" | "connected" | "identified";
@@ -75,7 +74,6 @@ class MessageSender {
     let params = {
       "id": guid(),
       "action": action,
-      "timestamp": new Date().getTime(),
       "data": data,
     };
 
@@ -164,7 +162,7 @@ class MessageSender {
         if (this.sent_messages.hasOwnProperty(id)) {
           var message = this.sent_messages[id];
 
-          if (message.timestamp + RESEND_TIMEOUT < now) {
+          if ((message.timestamp || 0) + RESEND_TIMEOUT < now) {
             to_delete.push(message);
           } else {
             to_keep[id] = message;
