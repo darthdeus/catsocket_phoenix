@@ -28,6 +28,10 @@ defmodule Catsocket.ClientHandler do
     GenServer.call(pid, {:incoming_message, payload})
   end
 
+  def binary_message(pid, payload) do
+    GenServer.call(pid, {:binary_message, payload})
+  end
+
   ### GenServer callbacks
 
   def init(client_pid) do
@@ -62,6 +66,14 @@ defmodule Catsocket.ClientHandler do
       {:error, reason} ->
         {:reply, {:error, reason}, state}
     end
+  end
+
+  def handle_call({:binary_message, payload}, _from, state) do
+    <<room :: size(128), data :: binary>> = payload
+
+    Rooms.broadcast(Rooms, state.api_key, room, data)
+
+    {:reply, {:ok, "fdsafasd"}, state}
   end
 
   def process_message(message, state) do

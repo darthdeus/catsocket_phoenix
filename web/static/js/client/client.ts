@@ -26,6 +26,8 @@ interface ReceivedMessage {
 
 type Status = "connecting" | "connected" | "identified";
 
+const ROOM_MAX_LEN = 16;
+
 const guid = (): string => {
   const s4 = () => {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -117,10 +119,11 @@ class MessageSender {
       this.cat.handlers[room] = handler;
     }
 
+    const paddedRoom = this.padRoom(room);
     this.cat.joined_rooms.push(room);
 
     this.send("join", {
-      "room": room,
+      "room": paddedRoom,
       "last_timestamp": last_timestamp
     });
   };
@@ -132,8 +135,38 @@ class MessageSender {
   };
 
   broadcast(room: string, message: any) {
-    this.send("broadcast", {"room": room, "message": message});
+    const payload = JSON.stringify(message);
+
+    // TODO - check no utf-8?
+    // TODO - check max message length
+
+    let buffer = new ArrayBuffer(ROOM_MAX_LEN + payload.length);
+    let view = new DataView(buffer);
+
+    const paddedRoom = this.padRoom(room);
+
+    for (let i = 0; i < ROOM_MAX_LEN; ++i) {
+      view.setUint8(i, paddedRoom.charCodeAt(i));
+    }
+
+    for (let i = ROOM_MAX_LEN; i < payload.length; ++i) {
+      view.setUint8(i, payload.charCodeAt(i));
+    }
+
+    this.cat.socket.send(buffer);
+    // this.send("broadcast", {"room": room, "message": message});
   };
+
+  padRoom(roomName: string) {
+    if (roomName.length > ROOM_MAX_LEN) {
+      throw `Room name must be at most ${ROOM_MAX_LEN} characters`;
+    }
+
+    const padding = "0000000000000000";
+    const paddedRoom = (padding + roomName).slice(-ROOM_MAX_LEN);
+
+    return paddedRoom;
+  }
 
   close() {
     this.cat.force_close = true;

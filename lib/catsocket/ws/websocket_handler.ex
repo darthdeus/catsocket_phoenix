@@ -30,8 +30,19 @@ defmodule Catsocket.WS.WebsocketHandler do
     ClientHandler.closed_connection(handler_pid)
   end
 
+  def websocket_handle({:binary, payload}, req, handler_pid) do
+    case ClientHandler.binary_message(handler_pid, {:binary, payload}) do
+      {:ok, reply} ->
+        {:reply, reply, req, handler_pid}
+
+      {:error, _reason} ->
+        # TODO: log error reason
+        {:shutdown, req, handler_pid}
+    end
+  end
+
   def websocket_handle({:text, text}, req, handler_pid) do
-    case ClientHandler.incoming_message(handler_pid, text) do
+    case ClientHandler.incoming_message(handler_pid, {:text, text}) do
       {:ok, reply} ->
         {:reply, reply, req, handler_pid}
 
