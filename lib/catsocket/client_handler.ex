@@ -49,7 +49,7 @@ defmodule Catsocket.ClientHandler do
   def handle_call(:closed_connection, _from, state) do
     Users.remove(Users, self())
     # TODO: this is wrong, should be removing by client guid
-    Rooms.remove_user(Rooms, self())
+    Rooms.remove_user(Rooms, state.guid)
 
     {:reply, :ok, state}
   end
