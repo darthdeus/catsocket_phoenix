@@ -87,10 +87,16 @@ defmodule Catsocket.Sockets.Rooms do
     # payload = << 3 :: size(1), guid :: size(288), room :: size(128), text :: binary >>
     payload = << 3 :: size(8), rest :: binary >>
 
+    # :ets.foldl(fn ({_, name}, acc) ->
+    #   Users.broadcast(Users, name, payload)
+    #   :ok
+    # end, :ok, ets)
+
     members = :ets.match_object(ets, {room, :_})
     for {_, name} <- members do
       Users.broadcast(Users, name, payload)
     end
+    {:reply, :ok, ets}
   end
 
   def room_name(api_key, room) do
