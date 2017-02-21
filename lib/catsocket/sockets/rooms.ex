@@ -40,36 +40,7 @@ defmodule Catsocket.Sockets.Rooms do
     Broadcasts a message to all members of a given room
   """
   def broadcast(pid, api_key, room, text) do
-    names = members(pid, api_key, room)
-
-    # message = %{
-    #   # action: "message",
-    #   # id: Ecto.UUID.generate(),
-    #   # timestamp: Timex.Duration.epoch(:milliseconds),
-    #   data: %{
-    #     message: text,
-    #     room: room,
-    #   }
-    # }
-
-    # TODO: use a broadcast constant for 3
-    guid = Ecto.UUID.generate()
-
-    rest = guid <> room <> << text :: binary >>
-    # payload = << 3 :: size(1), guid :: size(288), room :: size(128), text :: binary >>
-    payload = << 3 :: size(8), rest :: binary >>
-
-    # message = %{
-    #   room: room,
-    #   message: text
-    # }
-    #
-    # json = Poison.encode!(message)
-
-    for name <- names do
-      # IO.puts "broadcast to #{name} json #{json}"
-      Users.broadcast(Users, name, payload)
-    end
+    GenServer.call(pid, {:broadcast, room_name(api_key, room), text})
   end
 
   @doc """
@@ -106,6 +77,20 @@ defmodule Catsocket.Sockets.Rooms do
   def handle_call({:remove_user, user}, _from, ets) do
     :ets.match_delete(ets, {:_, user})
     {:reply, :ok, ets}
+  end
+
+  def handle_call({:broadcast, room, text}, _from, ets) do
+    # TODO: use a broadcast constant for 3
+    guid = Ecto.UUID.generate()
+
+    rest = guid <> room <> << text :: binary >>
+    # payload = << 3 :: size(1), guid :: size(288), room :: size(128), text :: binary >>
+    payload = << 3 :: size(8), rest :: binary >>
+
+    members = :ets.match_object(ets, {room, :_})
+    for {_, name} <- members do
+      Users.broadcast(Users, name, payload)
+    end
   end
 
   def room_name(api_key, room) do
