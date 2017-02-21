@@ -40,7 +40,7 @@ defmodule Catsocket.Sockets.Rooms do
     Broadcasts a message to all members of a given room
   """
   def broadcast(pid, api_key, room, text) do
-    GenServer.call(pid, {:broadcast, room_name(api_key, room), text})
+    GenServer.call(pid, {:broadcast, api_key, room, text})
   end
 
   @doc """
@@ -79,20 +79,16 @@ defmodule Catsocket.Sockets.Rooms do
     {:reply, :ok, ets}
   end
 
-  def handle_call({:broadcast, room, text}, _from, ets) do
+  def handle_call({:broadcast, api_key, room, text}, _from, ets) do
     # TODO: use a broadcast constant for 3
     guid = Ecto.UUID.generate()
 
     rest = guid <> room <> << text :: binary >>
-    # payload = << 3 :: size(1), guid :: size(288), room :: size(128), text :: binary >>
     payload = << 3 :: size(8), rest :: binary >>
 
-    # :ets.foldl(fn ({_, name}, acc) ->
-    #   Users.broadcast(Users, name, payload)
-    #   :ok
-    # end, :ok, ets)
+    room_key = room_name(api_key, room)
 
-    members = :ets.match_object(ets, {room, :_})
+    members = :ets.match_object(ets, {room_key, :_})
     for {_, name} <- members do
       Users.broadcast(Users, name, payload)
     end
