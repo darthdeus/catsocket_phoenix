@@ -188,15 +188,6 @@ const mountChat = function(username, element) {
 // NEW PHOENIX BASED CLIENT //
 import {Socket} from "phoenix"
 
-let socket = new Socket("/socket", {params: {token: window.userToken}})
-socket.connect()
-
-let channel = socket.channel("room:lobby", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
-// END //
-
 var buildPainter = function buildPainter(ctx) {
   return function paintAt(x, y) {
     ctx.beginPath();
@@ -205,6 +196,8 @@ var buildPainter = function buildPainter(ctx) {
     ctx.stroke();
   };
 }
+
+import { guid } from 'client/helpers';
 
 const mountPaint = function mountPaint(canvas) {
   var ctx = canvas.getContext('2d');
@@ -217,11 +210,21 @@ const mountPaint = function mountPaint(canvas) {
   ctx.lineCap = "round";
   ctx.strokeStyle = "blue";
 
+  let socket = new Socket("/socket", {params: {token: guid()}});
+  socket.connect()
+
+  let channel = socket.channel("room:lobby", {})
+  channel.join()
+         .receive("ok", resp => { console.log("Joined successfully", resp) })
+         .receive("error", resp => { console.log("Unable to join", resp) })
+  // END //
+
+
   canvas.addEventListener("mousemove", function(e: MouseEvent) {
     const x = e.offsetX;
     const y = e.offsetY;
 
-    channel.push("new_msg", {body: {x: x, y: y})
+    channel.push("new_msg", {body: {x: x, y: y}});
     paintAt(x, y);
   }, false);
 
