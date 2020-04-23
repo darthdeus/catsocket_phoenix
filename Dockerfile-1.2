@@ -1,0 +1,18 @@
+FROM elixir:1.2
+
+RUN apt-get update && apt-get install xz-utils
+
+WORKDIR /app
+RUN wget https://nodejs.org/dist/v12.16.2/node-v12.16.2-linux-x64.tar.xz && \
+    mkdir node && \
+    tar xvf node-v12.16.2-linux-x64.tar.xz -C node/ --strip 1 && \
+    rm node-v12.16.2-linux-x64.tar.xz 
+
+ENV PATH="/app/node/bin:${PATH}"
+RUN npm install yarn -g
+
+COPY mix.exs mix.lock package.json yarn.lock ./
+RUN yes | mix deps.get
+RUN yarn
+
+CMD ["bash"]
