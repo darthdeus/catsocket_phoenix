@@ -25,7 +25,9 @@ const PRODUCTION_BACKEND = process.env.NODE_ENV === "production";
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-// import socket from "./socket"
+//import socket from "./socket"
+
+console.log('from app.tsx');
 
 var ROOM = "chat";
 
@@ -177,9 +179,14 @@ class Chat extends React.Component<any, any> {
   }
 }
 
+
 const mountChat = function(username, element) {
   ReactDOM.render(React.createElement(Chat, {username: username}), element);
 };
+
+
+// NEW PHOENIX BASED CLIENT //
+import {Socket} from "phoenix"
 
 var buildPainter = function buildPainter(ctx) {
   return function paintAt(x, y) {
@@ -190,19 +197,12 @@ var buildPainter = function buildPainter(ctx) {
   };
 }
 
+import { guid } from 'client/helpers';
+
 const mountPaint = function mountPaint(canvas) {
   var ctx = canvas.getContext('2d');
 
   var paintAt = buildPainter(ctx);
-
-  var ROOM = "painter"
-  var cat = catsocket.init("b766496f-34b0-4967-8c14-7534dc57d38d", {
-    production: PRODUCTION_BACKEND
-  });
-
-  cat.join(ROOM, function(msg) {
-    paintAt(msg.x, msg.y);
-  });
 
   /* Drawing on Paint App */
   ctx.lineWidth = 3;
@@ -210,15 +210,29 @@ const mountPaint = function mountPaint(canvas) {
   ctx.lineCap = "round";
   ctx.strokeStyle = "blue";
 
+  let socket = new Socket("/socket", {params: {token: guid()}});
+  socket.connect()
+
+  let channel = socket.channel("room:lobby", {})
+  channel.join()
+         .receive("ok", resp => { console.log("Joined successfully", resp) })
+         .receive("error", resp => { console.log("Unable to join", resp) })
+  // END //
+
+
   canvas.addEventListener("mousemove", function(e: MouseEvent) {
     const x = e.offsetX;
     const y = e.offsetY;
 
-    console.log(x, y);
-
-    cat.broadcast(ROOM, { x, y });
+    channel.push("new_msg", {body: {x: x, y: y}});
     paintAt(x, y);
   }, false);
+
+  channel.on("new_msg", payload => {
+    const x = payload.body.x;
+    const y = payload.body.y;
+    paintAt(x, y);
+  })
 
 };
 

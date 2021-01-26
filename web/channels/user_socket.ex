@@ -2,7 +2,7 @@ defmodule Catsocket.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", Catsocket.RoomChannel
+  channel "room:*", Catsocket.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
